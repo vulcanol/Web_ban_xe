@@ -1,0 +1,122 @@
+{#include base.html title="Bán Xe Ô Tô - Trang Chủ"}
+{#body}
+
+<div class="jumbotron bg-light rounded-lg p-5 mb-5">
+  <h1 class="display-4">
+    <i class="bi bi-car-front"></i> Chào Mừng Đến Bán Xe Ô Tô
+  </h1>
+
+  <p class="lead">Nền tảng quản lý và bán các loại xe ô tô trực tuyến</p>
+
+  <hr class="my-4" />
+
+  <p>Quản lý danh mục, thương hiệu, xe hơi và các đơn hàng dễ dàng</p>
+</div>
+
+<div class="row mb-5">
+  <div class="col-md-3 mb-4">
+    <div class="card text-center h-100">
+      <div class="card-body">
+        <i
+          class="bi bi-grid-3x3-gap"
+          style="font-size: 2.5rem; color: #0d6efd"
+        ></i>
+
+        <h5 class="card-title mt-3">Danh Mục</h5>
+
+        <p class="card-text text-muted">Quản lý các danh mục xe</p>
+
+        <a href="/admin/categories" class="btn btn-primary btn-sm">
+          Xem Chi Tiết
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 mb-4">
+    <div class="card text-center h-100">
+      <div class="card-body">
+        <i
+          class="bi bi-car-front-fill"
+          style="font-size: 2.5rem; color: #198754"
+        ></i>
+
+        <h5 class="card-title mt-3">Xe Hơi</h5>
+
+        <p class="card-text text-muted">Quản lý danh sách xe hơi</p>
+
+        <a href="/admin/cars" class="btn btn-success btn-sm"> Xem Chi Tiết </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 mb-4">
+    <div class="card text-center h-100">
+      <div class="card-body">
+        <i class="bi bi-building" style="font-size: 2.5rem; color: #fd7e14"></i>
+
+        <h5 class="card-title mt-3">Thương Hiệu</h5>
+
+        <p class="card-text text-muted">Quản lý các thương hiệu xe</p>
+
+        <a href="/admin/brands" class="btn btn-warning btn-sm">
+          Xem Chi Tiết
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 mb-4">
+    <div class="card text-center h-100">
+      <div class="card-body">
+        <i class="bi bi-receipt" style="font-size: 2.5rem; color: #dc3545"></i>
+
+        <h5 class="card-title mt-3">Đơn Hàng</h5>
+
+        <p class="card-text text-muted">Quản lý các đơn hàng bán xe</p>
+
+        <a href="/admin/orders" class="btn btn-danger btn-sm"> Xem Chi Tiết </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">
+          <i class="bi bi-info-circle"></i>
+          Hướng Dẫn Nhanh
+        </h5>
+      </div>
+
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h6>Quản Lý Danh Mục</h6>
+
+            <ul>
+              <li>Tạo các danh mục xe mới: SUV, Sedan, Bán tải...</li>
+              <li>Chỉnh sửa và xóa danh mục hiện có</li>
+              <li>Thêm hình ảnh đại diện cho danh mục</li>
+            </ul>
+          </div>
+
+          <div class="col-md-6">
+            <h6>Quản Lý Xe Hơi</h6>
+
+            <ul>
+              <li>Thêm xe hơi mới vào hệ thống</li>
+              <li>Quản lý thông tin chi tiết xe: giá, mô tả...</li>
+              <li>Theo dõi trạng thái bán hàng</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/body}
+{/include}

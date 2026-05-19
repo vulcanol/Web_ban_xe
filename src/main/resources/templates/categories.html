@@ -1,0 +1,87 @@
+{#include base.html title="Danh mục" showPageHeader=true}
+{#body}
+
+<div class="row mb-4">
+  <div class="col-md-6">
+    <h2>Danh Sách Danh Mục</h2>
+  </div>
+
+  <div class="col-md-6 text-end">
+    <a href="/admin/categories/new" class="btn btn-primary">
+      <i class="bi bi-plus-circle"></i>
+      Thêm Danh Mục Mới
+    </a>
+  </div>
+</div>
+
+{#if categories.isEmpty}
+
+<div class="alert alert-info text-center" role="alert">
+  <i class="bi bi-info-circle"></i>
+
+  <p class="mb-0">
+    Chưa có danh mục nào.
+    <a href="/admin/categories/new"> Tạo danh mục mới </a>
+  </p>
+</div>
+
+{#else}
+
+<div class="row">
+  {#for category in categories}
+
+  <div class="col-md-4 mb-4">
+    <div class="card h-100">
+      {#if category.iconUrl}
+
+      <img
+        src="{category.iconUrl}"
+        class="card-img-top"
+        alt="{category.name}"
+        style="height: 220px; object-fit: cover"
+      />
+
+      {#else}
+
+      <div
+        class="card-img-top bg-light d-flex align-items-center justify-content-center"
+        style="height: 220px"
+      >
+        <i class="bi bi-image" style="font-size: 3rem; color: #ccc"></i>
+      </div>
+
+      {/if}
+
+      <div class="card-body">
+        <h5 class="card-title">{category.name}</h5>
+
+        <p class="card-text text-muted">{category.description}</p>
+      </div>
+
+      <div class="card-footer bg-white border-top d-flex gap-2">
+        <a
+          href="/admin/categories/{category.id}/edit"
+          class="btn btn-sm btn-outline-primary"
+        >
+          <i class="bi bi-pencil"></i>
+          Sửa
+        </a>
+
+        <a
+          href="/admin/categories/{category.id}/delete"
+          class="btn btn-sm btn-outline-danger"
+          onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này?');"
+        >
+          <i class="bi bi-trash"></i>
+          Xóa
+        </a>
+      </div>
+    </div>
+  </div>
+
+  {/for}
+</div>
+
+{/if}
+{/body}
+{/include}
