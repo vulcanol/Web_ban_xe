@@ -1,0 +1,190 @@
+{#include admin/base.html session=session activePage="dashboard"}
+
+{#pageTitle}Dashboard{/pageTitle}
+
+{#body}
+<style>
+  .stat-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    transition: all 0.3s;
+    border: 1px solid #f1f5f9;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    opacity: 0.08;
+  }
+  .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+  .stat-card.blue::before { background: #6366f1; }
+  .stat-card.green::before { background: #10b981; }
+  .stat-card.orange::before { background: #f59e0b; }
+  .stat-card.red::before { background: #ef4444; }
+  .stat-icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; margin-bottom: 1rem;
+  }
+  .stat-icon.blue { background: rgba(99,102,241,0.1); color: #6366f1; }
+  .stat-icon.green { background: rgba(16,185,129,0.1); color: #10b981; }
+  .stat-icon.orange { background: rgba(245,158,11,0.1); color: #f59e0b; }
+  .stat-icon.red { background: rgba(239,68,68,0.1); color: #ef4444; }
+  .stat-value { font-size: 2rem; font-weight: 800; color: #0f172a; line-height: 1; }
+  .stat-label { color: #64748b; font-size: 0.875rem; margin-top: 0.25rem; font-weight: 500; }
+  .stat-trend { font-size: 0.75rem; margin-top: 0.75rem; color: #10b981; font-weight: 600; }
+
+  .quick-action {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.25rem;
+    text-decoration: none;
+    color: #374151;
+    display: flex; align-items: center; gap: 1rem;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+  .quick-action:hover {
+    border-color: #6366f1;
+    background: rgba(99,102,241,0.04);
+    color: #6366f1;
+    transform: translateX(4px);
+  }
+  .quick-action i { font-size: 1.25rem; }
+  .section-title {
+    font-size: 1.1rem; font-weight: 700; color: #0f172a;
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .section-title::after {
+    content: ''; flex: 1;
+    height: 1px; background: #e2e8f0;
+    margin-left: 0.5rem;
+  }
+  .welcome-banner {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 20px;
+    padding: 2rem 2.5rem;
+    color: white;
+    margin-bottom: 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .welcome-banner::after {
+    content: '\f4cd';
+    font-family: 'bootstrap-icons';
+    position: absolute;
+    right: 2rem; top: 50%; transform: translateY(-50%);
+    font-size: 6rem; opacity: 0.1;
+  }
+  .welcome-banner h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .welcome-banner p { opacity: 0.8; margin: 0; }
+</style>
+
+<!-- Welcome Banner -->
+<div class="welcome-banner">
+  <div>
+    <h2>Chào mừng trở lại, {session.fullName}! 👋</h2>
+    <p>Đây là tổng quan hoạt động hệ thống hôm nay.</p>
+  </div>
+</div>
+
+<!-- Stats Grid -->
+<div class="row g-4 mb-4">
+  <div class="col-md-3">
+    <div class="stat-card blue">
+      <div class="stat-icon blue"><i class="bi bi-people-fill"></i></div>
+      <div class="stat-value">{totalUsers}</div>
+      <div class="stat-label">Người Dùng</div>
+      <div class="stat-trend"><i class="bi bi-arrow-up-short"></i> Tổng số tài khoản</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card green">
+      <div class="stat-icon green"><i class="bi bi-car-front-fill"></i></div>
+      <div class="stat-value">{totalListings}</div>
+      <div class="stat-label">Tin Đăng Xe</div>
+      <div class="stat-trend"><i class="bi bi-check-circle"></i> Đang hoạt động</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card orange">
+      <div class="stat-icon orange"><i class="bi bi-grid-3x3-gap-fill"></i></div>
+      <div class="stat-value">{totalCategories}</div>
+      <div class="stat-label">Danh Mục</div>
+      <div class="stat-trend"><i class="bi bi-tag"></i> Loại xe</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card red">
+      <div class="stat-icon red"><i class="bi bi-building-fill"></i></div>
+      <div class="stat-value">{totalBrands}</div>
+      <div class="stat-label">Thương Hiệu</div>
+      <div class="stat-trend"><i class="bi bi-star"></i> Hãng xe</div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="section-title"><i class="bi bi-lightning-charge-fill" style="color:#f59e0b"></i> Thao Tác Nhanh</div>
+    <div class="d-flex flex-column gap-2">
+      <a href="/admin/categories/new" class="quick-action">
+        <i class="bi bi-plus-circle" style="color:#6366f1"></i>
+        Thêm danh mục xe mới
+      </a>
+      <a href="/admin/brands" class="quick-action">
+        <i class="bi bi-building" style="color:#10b981"></i>
+        Quản lý thương hiệu xe
+      </a>
+      <a href="/admin/users" class="quick-action">
+        <i class="bi bi-people" style="color:#f59e0b"></i>
+        Xem danh sách người dùng
+      </a>
+      <a href="/admin/categories" class="quick-action">
+        <i class="bi bi-pencil-square" style="color:#ef4444"></i>
+        Chỉnh sửa danh mục
+      </a>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="section-title"><i class="bi bi-info-circle-fill" style="color:#6366f1"></i> Thông Tin Hệ Thống</div>
+    <div style="background:white; border-radius:16px; padding:1.5rem; border:1px solid #f1f5f9;">
+      <div style="display:flex; flex-direction:column; gap:1rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:0.75rem; border-bottom:1px solid #f1f5f9;">
+          <span style="color:#64748b; font-size:0.875rem;">Phiên bản</span>
+          <span style="font-weight:600; color:#0f172a;">v1.0.0</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:0.75rem; border-bottom:1px solid #f1f5f9;">
+          <span style="color:#64748b; font-size:0.875rem;">Framework</span>
+          <span style="font-weight:600; color:#0f172a;">Quarkus 3.35</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:0.75rem; border-bottom:1px solid #f1f5f9;">
+          <span style="color:#64748b; font-size:0.875rem;">Email Admin</span>
+          <span style="font-weight:600; color:#6366f1; font-size:0.85rem;">{session.email}</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:#64748b; font-size:0.875rem;">Trạng thái</span>
+          <span style="background:#dcfce7; color:#16a34a; padding:0.2rem 0.75rem; border-radius:999px; font-size:0.75rem; font-weight:600;">
+            <i class="bi bi-circle-fill" style="font-size:0.5rem;"></i> Online
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{/body}
+
+{/include}

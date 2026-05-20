@@ -27,6 +27,14 @@ public class BrandService {
                 .collect(Collectors.toList());
     }
 
+    public List<Brand> getAllBrandEntities() {
+        return brandRepository.listAll();
+    }
+
+    public long countBrands() {
+        return brandRepository.count();
+    }
+
     @Transactional
     public Brand createBrand(String name, String country, String logoUrl) {
         Brand brand = new Brand();

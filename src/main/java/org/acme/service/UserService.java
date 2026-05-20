@@ -79,6 +79,19 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public long countUsers() {
+        return userRepository.count();
+    }
+
+    @Transactional
+    public void toggleUserActive(Long id) {
+        User user = userRepository.findById(id);
+        if (user != null) {
+            user.setIsActive(!Boolean.TRUE.equals(user.getIsActive()));
+            userRepository.persist(user);
+        }
+    }
+
     private String hashPassword(String password) {
         return BCrypt.withDefaults().hashToString(12, password.toCharArray());
     }

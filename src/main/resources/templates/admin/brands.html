@@ -1,0 +1,89 @@
+{#include admin/base.html session=session activePage="brands"}
+
+{#pageTitle}Quản Lý Thương Hiệu{/pageTitle}
+
+{#body}
+<style>
+  .page-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; }
+  .page-header h2 { font-size:1.25rem; font-weight:700; color:#0f172a; margin:0; }
+  .table-card { background:white; border-radius:16px; border:1px solid #f1f5f9; overflow:hidden; }
+  table { width:100%; border-collapse:collapse; }
+  thead tr { background:#f8fafc; }
+  th { padding:0.875rem 1.25rem; font-size:0.75rem; font-weight:600;
+       color:#64748b; text-transform:uppercase; letter-spacing:0.5px; text-align:left; }
+  td { padding:1rem 1.25rem; border-top:1px solid #f1f5f9; vertical-align:middle; }
+  tr:hover td { background:#fafafa; }
+  .brand-logo { width:40px; height:40px; border-radius:10px;
+                object-fit:contain; background:#f8fafc; padding:4px; border:1px solid #e2e8f0; }
+  .logo-placeholder {
+    width:40px; height:40px; border-radius:10px;
+    background:linear-gradient(135deg,#e2e8f0,#cbd5e1);
+    display:flex; align-items:center; justify-content:center;
+    color:#94a3b8; font-size:1rem;
+  }
+  .brand-name { font-weight:600; color:#0f172a; }
+  .country-badge {
+    background:#f1f5f9; color:#64748b;
+    padding:0.2rem 0.6rem; border-radius:6px; font-size:0.75rem; font-weight:500;
+  }
+  .status-active { background:#dcfce7; color:#16a34a; padding:0.25rem 0.7rem;
+                   border-radius:999px; font-size:0.75rem; font-weight:600; }
+  .status-inactive { background:#fef2f2; color:#dc2626; padding:0.25rem 0.7rem;
+                     border-radius:999px; font-size:0.75rem; font-weight:600; }
+  .empty-state { text-align:center; padding:4rem 2rem; }
+  .empty-state i { font-size:3rem; color:#e2e8f0; display:block; margin-bottom:1rem; }
+</style>
+
+<div class="page-header">
+  <h2><i class="bi bi-building me-2" style="color:#10b981"></i>Thương Hiệu Xe</h2>
+  <span style="font-size:0.875rem; color:#94a3b8;">{brands.size()} thương hiệu</span>
+</div>
+
+<div class="table-card">
+  {#if brands.isEmpty}
+  <div class="empty-state">
+    <i class="bi bi-building"></i>
+    <p>Chưa có thương hiệu nào.<br>Thêm thương hiệu qua API: <code>POST /api/brands</code></p>
+  </div>
+  {#else}
+  <table>
+    <thead>
+      <tr>
+        <th>Logo</th>
+        <th>Thương Hiệu</th>
+        <th>Xuất Xứ</th>
+        <th>Trạng Thái</th>
+      </tr>
+    </thead>
+    <tbody>
+      {#for brand in brands}
+      <tr>
+        <td>
+          {#if brand.logoUrl}
+          <img src="{brand.logoUrl}" class="brand-logo" alt="{brand.name}" />
+          {#else}
+          <div class="logo-placeholder"><i class="bi bi-building"></i></div>
+          {/if}
+        </td>
+        <td><div class="brand-name">{brand.name}</div></td>
+        <td>
+          {#if brand.country}
+          <span class="country-badge"><i class="bi bi-geo-alt me-1"></i>{brand.country}</span>
+          {#else}—{/if}
+        </td>
+        <td>
+          {#if brand.isActive}
+          <span class="status-active"><i class="bi bi-check-circle-fill me-1"></i>Hoạt Động</span>
+          {#else}
+          <span class="status-inactive"><i class="bi bi-x-circle-fill me-1"></i>Tạm Dừng</span>
+          {/if}
+        </td>
+      </tr>
+      {/for}
+    </tbody>
+  </table>
+  {/if}
+</div>
+{/body}
+
+{/include}

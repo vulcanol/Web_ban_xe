@@ -1,5 +1,5 @@
-{#include base.html title="{isEdit ? 'Sửa danh mục' : 'Thêm danh mục mới'}"
-subtitle="{isEdit ? 'Cập nhật thông tin danh mục' : 'Tạo danh mục xe mới'}"
+{#include base.html title="{#if isEdit}Sửa danh mục{#else}Thêm danh mục mới{/if}"
+subtitle="{#if isEdit}Cập nhật thông tin danh mục{#else}Tạo danh mục xe mới{/if}"
 showPageHeader=true}
 {#body}
 

@@ -27,6 +27,10 @@ public class CategoryService {
         return categoryRepository.listAll();
     }
 
+    public long countCategories() {
+        return categoryRepository.count();
+    }
+
     public Category getCategoryById(Long id) {
         return categoryRepository.findById(id);
     }

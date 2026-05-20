@@ -1,0 +1,117 @@
+{#include admin/base.html session=session activePage="categories"}
+
+{#pageTitle}{#if isEdit}Sửa Danh Mục{#else}Thêm Danh Mục Mới{/if}{/pageTitle}
+
+{#body}
+<style>
+  .form-card {
+    background:white; border-radius:20px; border:1px solid #f1f5f9;
+    max-width:640px; margin:0 auto; padding:2.5rem;
+    box-shadow:0 4px 20px rgba(0,0,0,0.04);
+  }
+  .form-card h3 { font-size:1.1rem; font-weight:700; color:#0f172a; margin-bottom:1.75rem;
+                  padding-bottom:1rem; border-bottom:1px solid #f1f5f9; }
+  .form-label { font-size:0.85rem; font-weight:600; color:#374151; margin-bottom:0.4rem; display:block; }
+  .form-label .required { color:#ef4444; margin-left:2px; }
+  .form-control {
+    width:100%; padding:0.7rem 1rem; border:1.5px solid #e2e8f0;
+    border-radius:10px; font-size:0.875rem; color:#0f172a;
+    outline:none; transition:all 0.2s;
+    background:#fafafa;
+  }
+  .form-control:focus { border-color:#6366f1; background:white; box-shadow:0 0 0 3px rgba(99,102,241,0.1); }
+  textarea.form-control { min-height:100px; resize:vertical; }
+  .form-group { margin-bottom:1.25rem; }
+  .hint { font-size:0.78rem; color:#94a3b8; margin-top:0.3rem; }
+  .preview-img {
+    width:80px; height:80px; border-radius:12px; object-fit:cover;
+    border:2px solid #e2e8f0; margin-top:0.75rem;
+  }
+  .btn-submit {
+    background:linear-gradient(135deg,#6366f1,#8b5cf6);
+    color:white; border:none; padding:0.75rem 2rem;
+    border-radius:10px; font-weight:600; cursor:pointer;
+    transition:all 0.2s; font-size:0.9rem;
+  }
+  .btn-submit:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(99,102,241,0.3); }
+  .btn-cancel {
+    background:#f1f5f9; color:#64748b; text-decoration:none;
+    padding:0.75rem 1.5rem; border-radius:10px; font-weight:600;
+    font-size:0.9rem; display:inline-flex; align-items:center; gap:0.5rem;
+    transition:all 0.2s;
+  }
+  .btn-cancel:hover { background:#e2e8f0; color:#374151; }
+</style>
+
+<div style="margin-bottom:1.5rem;">
+  <a href="/admin/categories" style="color:#6366f1; text-decoration:none; font-size:0.875rem; font-weight:500;">
+    <i class="bi bi-arrow-left me-1"></i> Quay Lại Danh Sách
+  </a>
+</div>
+
+<div class="form-card">
+  <h3>
+    <i class="bi {#if isEdit}bi-pencil-square{#else}bi-plus-circle-fill{/if}" style="color:#6366f1; margin-right:0.5rem;"></i>
+    {#if isEdit}Chỉnh Sửa Danh Mục{#else}Thêm Danh Mục Mới{/if}
+  </h3>
+
+  <form method="post" action="{#if isEdit}/admin/categories/{category.id}/update{#else}/admin/categories/create{/if}">
+    <div class="form-group">
+      <label class="form-label">Tên Danh Mục <span class="required">*</span></label>
+      <input type="text" class="form-control" name="name"
+             value="{#if category}{category.name}{/if}"
+             placeholder="Ví dụ: SUV, Sedan, Coupe..." required />
+      <div class="hint">Tên phân loại xe sẽ hiển thị cho người dùng</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Mô Tả</label>
+      <textarea class="form-control" name="description"
+                placeholder="Mô tả chi tiết về danh mục này...">{#if category}{category.description}{/if}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">URL Hình Ảnh</label>
+      <input type="url" class="form-control" name="iconUrl" id="iconUrl"
+             value="{#if category}{category.iconUrl}{/if}"
+             placeholder="https://example.com/image.jpg"
+             oninput="updatePreview(this.value)" />
+      <div class="hint">Đường dẫn hình ảnh đại diện cho danh mục</div>
+      {#if category}
+        {#if category.iconUrl}
+        <img id="imgPreview" src="{category.iconUrl}" class="preview-img" alt="Preview" />
+        {#else}
+        <img id="imgPreview" src="" class="preview-img" alt="Preview" style="display:none;" />
+        {/if}
+      {#else}
+      <img id="imgPreview" src="" class="preview-img" alt="Preview" style="display:none;" />
+      {/if}
+    </div>
+
+    <div style="display:flex; gap:1rem; margin-top:2rem;">
+      <button type="submit" class="btn-submit">
+        <i class="bi bi-check-lg me-1"></i>
+        {#if isEdit}Cập Nhật{#else}Tạo Danh Mục{/if}
+      </button>
+      <a href="/admin/categories" class="btn-cancel">
+        <i class="bi bi-x-lg"></i> Hủy
+      </a>
+    </div>
+  </form>
+</div>
+
+<script>
+function updatePreview(url) {
+  const img = document.getElementById('imgPreview');
+  if (url) {
+    img.src = url;
+    img.style.display = 'block';
+    img.onerror = () => img.style.display = 'none';
+  } else {
+    img.style.display = 'none';
+  }
+}
+</script>
+{/body}
+
+{/include}

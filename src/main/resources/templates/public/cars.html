@@ -1,0 +1,1545 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Các Dòng Xe Hạng Sang - Bán Xe Ô Tô</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+    body { background-color: #0d0d0d; color: #fff; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+    h1, h2, h3, h4, h5, h6, .serif { font-family: 'Playfair Display', serif; }
+    a { text-decoration: none; }
+    
+    /* Navbar */
+    .navbar { background-color: #000; padding: 1.2rem 2rem; border-bottom: 1px solid #1f1f1f; position: sticky; top: 0; z-index: 1000; }
+    .navbar .nav-link { color: #fff !important; font-size: 0.85rem; font-weight: 500; margin-right: 1.5rem; transition: color 0.3s; }
+    .navbar .nav-link:hover { color: #aaa !important; }
+    .navbar-brand { position: absolute; left: 50%; transform: translateX(-50%); color: #fff; font-size: 1.8rem; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border: 1.5px solid #fff; border-radius: 50%; padding: 0; transition: all 0.3s; }
+    .navbar-brand:hover { color: #aaa; border-color: #aaa; }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-right .icon-link { color: #fff; font-size: 1.2rem; transition: color 0.3s; }
+    .nav-right .icon-link:hover { color: #aaa; }
+    .btn-login-nav { background-color: #222; color: #fff; border: none; border-radius: 20px; padding: 0.5rem 1.2rem; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; transition: background 0.3s; text-decoration: none; }
+    .btn-login-nav:hover { background-color: #444; color: #fff; }
+
+    /* Header Section */
+    .collection-header { padding: 4rem 2rem 2rem; text-align: center; background: linear-gradient(to bottom, #000 0%, #0d0d0d 100%); }
+    .collection-title { font-size: 3rem; font-weight: 400; letter-spacing: 1px; margin-bottom: 1rem; }
+    .collection-subtitle { font-size: 1rem; font-weight: 300; color: #aaa; max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.6; }
+    
+    /* Brand Tabs */
+    .brand-tabs { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .brand-tab { background: transparent; color: #888; border: 1px solid #222; padding: 0.8rem 2rem; font-size: 0.85rem; font-weight: 500; cursor: pointer; text-transform: uppercase; letter-spacing: 1.5px; transition: all 0.3s ease; }
+    .brand-tab:hover { color: #fff; border-color: #444; }
+    .brand-tab.active { background: #fff; color: #000; border-color: #fff; font-weight: 600; }
+
+    /* Main Container layout */
+    .main-content { padding: 0 3rem 6rem; }
+    
+    /* Sticky Sidebar Filter */
+    .filter-sidebar { background: #121212; border: 1px solid #1f1f1f; padding: 2rem; position: sticky; top: 100px; height: calc(100vh - 140px); overflow-y: auto; }
+    .filter-section-title { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: #888; margin-bottom: 1.2rem; border-bottom: 1px solid #222; padding-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; }
+    .filter-section-title i { font-size: 0.8rem; cursor: pointer; }
+    .filter-group { margin-bottom: 2rem; }
+    
+    /* Pill selectors */
+    .pill-selectors { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .pill-select { background: #1a1a1a; color: #ccc; border: 1px solid #333; padding: 0.4rem 0.9rem; font-size: 0.8rem; border-radius: 20px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.3rem; }
+    .pill-select:hover { border-color: #555; color: #fff; }
+    .pill-select.active { background: #fff; color: #000; border-color: #fff; font-weight: 500; }
+
+    /* Checkboxes custom styling */
+    .custom-check { display: flex; align-items: center; gap: 0.6rem; color: #ccc; font-size: 0.9rem; margin-bottom: 0.8rem; cursor: pointer; user-select: none; }
+    .custom-check input { display: none; }
+    .custom-check-box { width: 16px; height: 16px; border: 1px solid #444; background: #1a1a1a; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .custom-check:hover .custom-check-box { border-color: #666; }
+    .custom-check input:checked + .custom-check-box { background: #fff; border-color: #fff; }
+    .custom-check input:checked + .custom-check-box::after { content: "\F26B"; font-family: "bootstrap-icons"; font-size: 10px; color: #000; font-weight: bold; }
+    .custom-check-label { flex-grow: 1; }
+    .custom-check-count { color: #555; font-size: 0.8rem; }
+    
+    /* Search Box */
+    .search-box-wrapper { position: relative; margin-bottom: 2rem; }
+    .search-input { width: 100%; background: #121212; border: 1px solid #1f1f1f; color: #fff; padding: 0.8rem 1rem 0.8rem 2.8rem; font-size: 0.9rem; transition: all 0.3s; }
+    .search-input:focus { outline: none; border-color: #fff; background: #161616; }
+    .search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #666; font-size: 1rem; }
+    
+    /* Price slider styles */
+    .price-quick-btn { background: #1a1a1a; border: 1px solid #333; color: #ccc; font-size: 0.8rem; padding: 0.4rem 0.8rem; cursor: pointer; transition: all 0.2s; text-align: center; }
+    .price-quick-btn:hover { border-color: #fff; color: #fff; }
+    .price-quick-btn.active { background: #fff; color: #000; border-color: #fff; }
+
+    /* Right side Grid layout */
+    .models-count { font-size: 1.1rem; font-weight: 400; color: #fff; margin-bottom: 1.5rem; }
+    
+    /* Premium Car Card */
+    .car-card { background: #121212; border: 1px solid #1a1a1a; display: flex; flex-direction: column; height: 100%; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); position: relative; overflow: hidden; }
+    .car-card:hover { transform: translateY(-8px); border-color: #333; box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.02); }
+    
+    .car-card-img-container { height: 220px; overflow: hidden; position: relative; background: #000; display: flex; align-items: center; justify-content: center; }
+    .car-card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    .car-card:hover .car-card-img { transform: scale(1.08); }
+    
+    .car-badge-overlay { position: absolute; top: 1rem; left: 1rem; display: flex; gap: 0.4rem; z-index: 5; }
+    .car-badge { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; padding: 0.3rem 0.7rem; letter-spacing: 1px; border-radius: 2px; }
+    .car-badge-premium { background: #fff; color: #000; }
+    .car-badge-electric { background: #1e88e5; color: #fff; }
+    .car-badge-hybrid { background: #43a047; color: #fff; }
+    .car-badge-new { background: #e53935; color: #fff; }
+    
+    .car-card-body { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
+    .car-brand-tag { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: #777; letter-spacing: 2px; margin-bottom: 0.4rem; }
+    .car-name-title { font-size: 1.4rem; font-weight: 400; margin-bottom: 0.8rem; color: #fff; line-height: 1.2; }
+    
+    .car-specs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; border-top: 1px solid #1f1f1f; border-bottom: 1px solid #1f1f1f; padding: 0.8rem 0; margin-bottom: 1.2rem; }
+    .spec-item { display: flex; align-items: center; gap: 0.4rem; color: #999; font-size: 0.75rem; }
+    .spec-item i { color: #fff; font-size: 0.85rem; }
+    
+    .car-price-row { display: flex; flex-direction: column; margin-bottom: 1.5rem; }
+    .car-price-lbl { font-size: 0.75rem; color: #666; text-transform: uppercase; margin-bottom: 0.1rem; }
+    .car-price-val { font-size: 1.3rem; font-weight: 600; color: #fff; }
+    
+    .car-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: auto; }
+    .btn-card-outline { background: transparent; color: #fff; border: 1px solid #333; padding: 0.65rem 0.5rem; font-size: 0.75rem; font-weight: 600; transition: all 0.2s; text-align: center; }
+    .btn-card-outline:hover { border-color: #fff; background: rgba(255,255,255,0.05); }
+    .btn-card-solid { background: #fff; color: #000; border: 1px solid #fff; padding: 0.65rem 0.5rem; font-size: 0.75rem; font-weight: 700; transition: all 0.2s; text-align: center; }
+    .btn-card-solid:hover { background: #e0e0e0; border-color: #e0e0e0; }
+    
+    /* Luxury Modal detail styles */
+    .lux-modal-content { background-color: #0f0f0f; border: 1px solid #222; border-radius: 0; color: #fff; padding: 1.5rem; }
+    .lux-modal-header { border-bottom: 1px solid #1f1f1f; padding-bottom: 1rem; }
+    .lux-modal-title { font-size: 2.2rem; font-weight: 400; }
+    .lux-modal-body { padding: 2rem 0; }
+    .lux-spec-box { background: #161616; border: 1px solid #222; padding: 1rem; text-align: center; display: flex; flex-direction: column; gap: 0.2rem; }
+    .lux-spec-label { font-size: 0.7rem; text-transform: uppercase; color: #666; }
+    .lux-spec-value { font-size: 1rem; font-weight: 600; color: #fff; }
+    .lux-desc-txt { font-size: 0.95rem; line-height: 1.7; color: #bbb; margin-bottom: 2rem; font-weight: 300; }
+    .btn-lux-order { background: #fff; color: #000; border: 1px solid #fff; padding: 1rem 3rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; transition: all 0.3s; width: 100%; text-align: center; }
+    .btn-lux-order:hover { background: #ccc; border-color: #ccc; }
+    
+    /* Floating alert */
+    .floating-alert { position: fixed; bottom: 2rem; right: 2rem; background: #fff; color: #000; border: none; border-radius: 0; padding: 1rem 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 2000; display: flex; align-items: center; gap: 0.8rem; transform: translateY(150%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .floating-alert.show { transform: translateY(0); }
+    .floating-alert i { font-size: 1.3rem; color: #2e7d32; }
+
+    /* Footer */
+    footer { background-color: #000; color: #fff; padding: 5rem 2rem 2rem; border-top: 1px solid #161616; margin-top: auto; }
+    .footer-top { display: flex; justify-content: center; margin-bottom: 4rem; }
+    .back-to-top { color: #888; font-size: 0.85rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; cursor: pointer; transition: color 0.3s; }
+    .back-to-top:hover { color: #fff; }
+    .back-to-top i { font-size: 1.2rem; }
+    .footer-links h5 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1.5rem; font-family: 'Inter', sans-serif; }
+    .footer-links ul { list-style: none; padding: 0; }
+    .footer-links li { margin-bottom: 1rem; }
+    .footer-links a { color: #888; font-size: 0.9rem; transition: color 0.3s; }
+    .footer-links a:hover { color: #fff; }
+    .footer-bottom { margin-top: 5rem; padding-top: 2rem; border-top: 1px solid #1f1f1f; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+    .footer-bottom-links { display: flex; gap: 2rem; font-size: 0.85rem; color: #888; flex-wrap: wrap; }
+    .footer-bottom-links a { color: #888; transition: color 0.3s; }
+    .footer-bottom-links a:hover { color: #fff; }
+    .social-icons { display: flex; gap: 1.5rem; font-size: 1.3rem; }
+    .social-icons a { color: #888; transition: color 0.3s; }
+    .social-icons a:hover { color: #fff; }
+    .footer-logo { font-size: 2rem; color: #fff; border: 1.5px solid #fff; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; }
+
+    /* Login Modal Styles */
+    .custom-modal-right { position: absolute; top: 60px; right: 2rem; margin: 0; width: 400px; max-width: calc(100% - 4rem); }
+    .modal-content { border-radius: 0; border: none; padding: 0.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+    .modal-header { border-bottom: none; padding: 1rem 1.5rem 0.5rem; justify-content: flex-end; }
+    .modal-title { font-size: 2.2rem; margin-bottom: 0.5rem; }
+    .modal-body { padding: 0 2rem 2.5rem; text-align: left; }
+    .modal-body p { font-size: 0.95rem; margin-bottom: 2rem; color: #000; }
+    .btn-black { background-color: #1a1a1a; color: #fff; width: 100%; padding: 1.2rem; font-weight: 600; font-size: 0.95rem; border: none; margin-bottom: 1rem; transition: background 0.3s; border-radius: 0; display: inline-block; text-align: center; }
+    .btn-black:hover { background-color: #000; color: #fff; }
+    .btn-outline-black { background-color: #fff; color: #000; border: 1px solid #ddd; width: 100%; padding: 1.2rem; font-weight: 600; font-size: 0.95rem; transition: border-color 0.3s; border-radius: 0; display: inline-block; text-align: center; }
+    .btn-outline-black:hover { border-color: #999; }
+    .btn-close { font-size: 0.8rem; }
+
+    /* Mega Menu */
+    .mega-menu-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.55); z-index: 1100; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .mega-menu-overlay.open { opacity: 1; pointer-events: all; }
+    .mega-menu-panel { position: fixed; top: 0; left: 0; bottom: 0; width: 450px; max-width: 90vw; background: #fff; color: #000; z-index: 1101; padding: 5rem 3.5rem 3.5rem; transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); height: 100vh; overflow-y: auto; box-shadow: 10px 0 40px rgba(0,0,0,0.2); }
+    .mega-menu-panel.open { transform: translateX(0); }
+    .mega-menu-close { position: absolute; top: 2rem; right: 2.5rem; background: none; border: none; font-size: 1.6rem; cursor: pointer; color: #111; line-height: 1; padding: 0.3rem 0.5rem; transition: color 0.2s, transform 0.2s; }
+    .mega-menu-close:hover { color: #000; transform: rotate(90deg); }
+    .mega-menu-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 400; margin-bottom: 2.5rem; color: #000; letter-spacing: -0.5px; }
+    .mega-menu-list { list-style: none; padding: 0; margin: 0 0 2rem 0; }
+    .mega-menu-list li { margin-bottom: 1.1rem; }
+    .mega-menu-list a { color: #111; font-size: 1.05rem; font-weight: 400; text-decoration: none; transition: color 0.2s, padding-left: 0.25s; display: inline-block; }
+    .mega-menu-list a:hover { color: #000; padding-left: 6px; text-decoration: none; }
+    .mega-menu-divider { border: none; border-top: 1px solid #e5e5e5; margin: 2rem 0; }
+    .nav-link-mega { cursor: pointer; background: none; border: none; padding: 0; color: #fff !important; font-size: 0.85rem; font-weight: 500; margin-right: 1.5rem; transition: color 0.3s; }
+    .nav-link-mega:hover { color: #aaa !important; }
+    
+    /* Premium Form details modal */
+    .lux-input { background: #161616; border: 1px solid #222; color: #fff; padding: 0.8rem 1rem; border-radius: 0; width: 100%; transition: all 0.3s; }
+    .lux-input:focus { border-color: #fff; outline: none; background: #1a1a1a; }
+    .lux-form-lbl { font-size: 0.8rem; font-weight: 500; color: #888; margin-bottom: 0.4rem; display: block; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* Transitions & Keyframes */
+    .fade-item { animation: fadeEffect 0.5s ease forwards; }
+    @keyframes fadeEffect {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar d-flex justify-content-between align-items-center">
+  <div class="d-none d-lg-flex">
+    <button class="nav-link-mega" id="btn-cac-mau-xe" onclick="openMenu('megaMenuPanel')" type="button">Các mẫu xe</button>
+    <button class="nav-link-mega" id="btn-mua" onclick="openMenu('buyMenuPanel')" type="button">Mua</button>
+    <button class="nav-link-mega" id="btn-dich-vu" onclick="openMenu('serviceMenuPanel')" type="button">Dịch vụ</button>
+    <button class="nav-link-mega" id="btn-thuong-hieu" onclick="openMenu('brandMenuPanel')" type="button">Thương hiệu</button>
+  </div>
+  
+  <a href="/" class="navbar-brand">
+    <i class="bi bi-car-front-fill"></i>
+  </a>
+
+  <div class="nav-right">
+    <a href="#" class="nav-link d-none d-md-block">Provider/...</a>
+    <a href="#" class="icon-link"><i class="bi bi-search"></i></a>
+    <a href="#" class="icon-link"><i class="bi bi-globe"></i></a>
+    
+    {#if session??}
+      <a href="{#if session.role == 'ADMIN'}/admin{#else}/user/home{/if}" class="btn-login-nav">
+        <div style="width: 24px; height: 24px; background: #fff; color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px;">{session.fullName.substring(0,1)}</div>
+        {session.fullName}
+      </a>
+    {#else}
+      <button class="btn-login-nav" data-bs-toggle="modal" data-bs-target="#loginModal">
+        <i class="bi bi-person-fill"></i> Đăng nhập
+      </button>
+    {/if}
+  </div>
+</nav>
+
+<!-- Header Section -->
+<section class="collection-header">
+  <div class="container-fluid">
+    <h1 class="collection-title serif">Các Dòng Xe Sang Trọng</h1>
+    <p class="collection-subtitle">Kiệt tác cơ khí giao thoa cùng phong cách sống đỉnh cao. Khám phá những dòng sản phẩm sang trọng bậc nhất thế giới.</p>
+    
+    <!-- Brand Tabs -->
+    <div class="brand-tabs" id="brandTabs">
+      <button class="brand-tab active" onclick="setBrandTab('ALL', this)">TẤT CẢ DÒNG XE</button>
+      <button class="brand-tab" onclick="setBrandTab('MERCEDES-BENZ', this)">MERCEDES-BENZ</button>
+      <button class="brand-tab" onclick="setBrandTab('MERCEDES-AMG', this)">MERCEDES-AMG</button>
+      <button class="brand-tab" onclick="setBrandTab('MERCEDES-MAYBACH', this)">MERCEDES-MAYBACH</button>
+      <button class="brand-tab" onclick="setBrandTab('OTHER', this)">CÁC HÃNG KHÁC</button>
+    </div>
+  </div>
+</section>
+
+<!-- Main Container -->
+<main class="main-content container-fluid">
+  <div class="row g-5">
+    
+    <!-- Left Sidebar Filter -->
+    <div class="col-lg-3">
+      <div class="filter-sidebar">
+        
+        <!-- Search -->
+        <div class="search-box-wrapper">
+          <i class="bi bi-search search-icon"></i>
+          <input type="text" class="search-input" id="searchInput" placeholder="Tìm kiếm mẫu xe, thông số..." oninput="triggerFilters()">
+        </div>
+        
+        <!-- Total count & Reset -->
+        <div class="filter-section-title">
+          <span>BỘ LỌC TÌM KIẾM</span>
+          <span style="font-size: 0.75rem; text-decoration: underline; color: #fff; cursor: pointer; font-weight: 500;" onclick="resetFilters()">LÀM MỚI</span>
+        </div>
+        
+        <!-- Show only (Pill Toggle) -->
+        <div class="filter-group">
+          <span class="lux-form-lbl">Hiển thị nhanh</span>
+          <div class="pill-selectors">
+            <button class="pill-select" id="pillNew" onclick="togglePillFilter('new')"><i class="bi bi-star"></i> Mẫu mới</button>
+            <button class="pill-select" id="pillElectric" onclick="togglePillFilter('electric')"><i class="bi bi-lightning-charge"></i> Xe thuần điện</button>
+            <button class="pill-select" id="pillHybrid" onclick="togglePillFilter('hybrid')"><i class="bi bi-ev-front"></i> Hybrid</button>
+          </div>
+        </div>
+        
+        <!-- Category Filter -->
+        <div class="filter-group">
+          <span class="lux-form-lbl">Dòng xe (Phân khúc)</span>
+          <div id="categoryFilters">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+        <!-- Fuel Filter -->
+        <div class="filter-group">
+          <span class="lux-form-lbl">Nhiên liệu</span>
+          <label class="custom-check" onclick="toggleFuelCheck('XANG')">
+            <input type="checkbox" id="fuel-XANG">
+            <span class="custom-check-box"></span>
+            <span class="custom-check-label">Xăng / Dầu</span>
+          </label>
+          <label class="custom-check" onclick="toggleFuelCheck('DIEN')">
+            <input type="checkbox" id="fuel-DIEN">
+            <span class="custom-check-box"></span>
+            <span class="custom-check-label">Điện (EQ)</span>
+          </label>
+          <label class="custom-check" onclick="toggleFuelCheck('HYBRID')">
+            <input type="checkbox" id="fuel-HYBRID">
+            <span class="custom-check-box"></span>
+            <span class="custom-check-label">Hybrid</span>
+          </label>
+        </div>
+
+        <!-- Transmission Filter -->
+        <div class="filter-group">
+          <span class="lux-form-lbl">Hộp số</span>
+          <label class="custom-check" onclick="toggleTransCheck('SO_TU_DONG')">
+            <input type="checkbox" id="trans-SO_TU_DONG">
+            <span class="custom-check-box"></span>
+            <span class="custom-check-label">Tự động (Automatic)</span>
+          </label>
+          <label class="custom-check" onclick="toggleTransCheck('SO_SAN')">
+            <input type="checkbox" id="trans-SO_SAN">
+            <span class="custom-check-box"></span>
+            <span class="custom-check-label">Số sàn (Manual)</span>
+          </label>
+        </div>
+        
+        <!-- Price range quick selector -->
+        <div class="filter-group">
+          <span class="lux-form-lbl">Khoảng giá</span>
+          <div class="d-grid gap-2">
+            <button class="price-quick-btn" id="priceBtnAll" onclick="setPriceFilter('ALL')">Tất cả khoảng giá</button>
+            <button class="price-quick-btn" id="priceBtnUnder3" onclick="setPriceFilter('UNDER_3')">Dưới 3 tỷ VNĐ</button>
+            <button class="price-quick-btn" id="priceBtn3to6" onclick="setPriceFilter('3_TO_6')">Từ 3 - 6 tỷ VNĐ</button>
+            <button class="price-quick-btn" id="priceBtnOver6" onclick="setPriceFilter('OVER_6')">Trên 6 tỷ VNĐ</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    
+    <!-- Right Car List Grid -->
+    <div class="col-lg-9">
+      <!-- Grid header with counts -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="models-count serif" id="resultsCount">Đang tải danh sách dòng xe...</h3>
+      </div>
+      
+      <!-- Cars Grid -->
+      <div class="row g-4" id="carsGrid">
+        <!-- Dynamic Cards Inserted Here via JS -->
+      </div>
+      
+      <!-- Empty state -->
+      <div id="emptyState" class="text-center py-5 d-none">
+        <i class="bi bi-search" style="font-size: 3rem; color: #333;"></i>
+        <h4 class="serif mt-3 text-white">Không tìm thấy mẫu xe phù hợp</h4>
+        <p class="text-muted">Vui lòng thay đổi bộ lọc hoặc làm mới từ khóa tìm kiếm của bạn.</p>
+        <button class="btn btn-outline-light mt-3" style="border-radius:0;" onclick="resetFilters()">Làm mới bộ lọc</button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- Car Details Modal -->
+<div class="modal fade" id="carDetailsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content lux-modal-content">
+      <div class="modal-header lux-modal-header border-0 d-flex justify-content-between align-items-center">
+        <h3 class="lux-modal-title serif mb-0" id="modalCarName">Mercedes-Maybach S 680</h3>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body lux-modal-body">
+        <div class="row g-4">
+          <div class="col-md-6">
+            <img src="" id="modalCarImage" class="img-fluid border border-dark mb-3" style="width:100%; object-fit:cover; height:240px;" alt="Xe sang">
+            <p class="lux-desc-txt" id="modalCarDesc"></p>
+          </div>
+          <div class="col-md-6">
+            <h5 class="serif text-white mb-3" style="letter-spacing: 1px;">THÔNG SỐ KỸ THUẬT</h5>
+            <div class="row g-2 mb-4">
+              <div class="col-6">
+                <div class="lux-spec-box">
+                  <span class="lux-spec-label">Nhiên liệu</span>
+                  <span class="lux-spec-value" id="modalCarFuel">Xăng</span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="lux-spec-box">
+                  <span class="lux-spec-label">Hộp số</span>
+                  <span class="lux-spec-value" id="modalCarTrans">Tự động 9 cấp</span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="lux-spec-box">
+                  <span class="lux-spec-label">Công suất</span>
+                  <span class="lux-spec-value" id="modalCarHP">612 HP</span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="lux-spec-box">
+                  <span class="lux-spec-label">Số chỗ</span>
+                  <span class="lux-spec-value" id="modalCarSeats">4 Chỗ</span>
+                </div>
+              </div>
+              <div class="col-12 mt-2">
+                <div class="lux-spec-box py-2" style="background: #222; border-color: #333;">
+                  <span class="lux-spec-label" style="color: #bbb;">Dung tích xy lanh</span>
+                  <span class="lux-spec-value text-white" id="modalCarDisp">6.0 Lít</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="border-top border-dark pt-3 mb-4">
+              <span class="lux-spec-label d-block mb-1">GIÁ BÁN NIÊM YẾT</span>
+              <h2 class="text-white mb-0" id="modalCarPrice" style="font-weight: 700;">15.990.000.000 đ</h2>
+            </div>
+            
+            <button class="btn btn-lux-order" onclick="openConsultationForm()">NHẬN TƯ VẤN & BÁO GIÁ CHI TIẾT</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Consultation Request Modal -->
+<div class="modal fade" id="consultationModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="width: 450px;">
+    <div class="modal-content lux-modal-content">
+      <div class="modal-header lux-modal-header border-0 justify-content-between align-items-center">
+        <h4 class="serif mb-0 text-white" style="letter-spacing: 1px;">YÊU CẦU BÁO GIÁ</h4>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body py-3">
+        <p class="text-muted mb-4" style="font-size: 0.85rem; line-height: 1.5;">Vui lòng điền thông tin để đội ngũ chuyên viên cao cấp của chúng tôi liên hệ tư vấn lộ trình sở hữu xe và các ưu đãi đặc quyền sớm nhất.</p>
+        
+        <form id="consultationForm" onsubmit="submitConsultation(event)">
+          <div class="mb-3">
+            <label class="lux-form-lbl">Mẫu xe quan tâm</label>
+            <input type="text" class="lux-input" id="formCarModel" readonly style="color: #aaa;">
+          </div>
+          <div class="mb-3">
+            <label class="lux-form-lbl">Họ và tên quý khách</label>
+            <input type="text" class="lux-input" id="formCustomerName" placeholder="Ví dụ: Nguyễn Văn A" required>
+          </div>
+          <div class="mb-3">
+            <label class="lux-form-lbl">Số điện thoại liên hệ</label>
+            <input type="tel" class="lux-input" id="formCustomerPhone" placeholder="Ví dụ: 090 123 4567" required>
+          </div>
+          <div class="mb-4">
+            <label class="lux-form-lbl">Khu vực phân phối</label>
+            <select class="lux-input form-select" id="formCustomerRegion" style="appearance: none;">
+              <option value="Hà Nội">Khu vực Miền Bắc (Hà Nội)</option>
+              <option value="Đà Nẵng">Khu vực Miền Trung (Đà Nẵng)</option>
+              <option value="Hồ Chí Minh">Khu vực Miền Nam (TP. Hồ Chí Minh)</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-lux-order py-3">GỬI YÊU CẦU ĐĂNG KÝ KÝ DANH</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Floating Success Alert -->
+<div class="floating-alert" id="successAlert">
+  <i class="bi bi-check-circle-fill"></i>
+  <div>
+    <strong class="d-block text-black" style="font-size: 0.9rem;">Gửi thành công!</strong>
+    <span class="text-muted" style="font-size: 0.8rem;">Chuyên viên sẽ liên hệ trong ít phút.</span>
+  </div>
+</div>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog custom-modal-right">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h5 class="modal-title serif">Đăng nhập Bán Xe Ô Tô</h5>
+        <p>Đăng nhập tại đây</p>
+        <a href="/auth/login" class="btn btn-black">Đăng nhập</a>
+        <a href="/auth/register" class="btn btn-outline-black">Tạo tài khoản mới</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Mega Menu Dynamic Content Modal -->
+<div class="modal fade" id="megaMenuContentModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content lux-modal-content">
+      <div class="modal-header lux-modal-header border-0 justify-content-between align-items-center">
+        <h4 class="serif mb-0 text-white" id="menuContentTitle" style="letter-spacing: 1px;"></h4>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body py-3" id="menuContentBody">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Mega Menu -->
+<div class="mega-menu-overlay" id="megaMenuOverlay" onclick="closeAllMenus()"></div>
+<div class="mega-menu-panel" id="megaMenuPanel" role="dialog" aria-modal="true" aria-label="Các mẫu xe">
+  <button class="mega-menu-close" onclick="closeAllMenus()" aria-label="Đóng">&#10005;</button>
+  <h2 class="mega-menu-title">Các mẫu xe</h2>
+  <ul class="mega-menu-list">
+    <li><a href="/cars" onclick="closeAllMenus()">Tất cả các dòng xe</a></li>
+    <li><a href="/cars?filter=new" onclick="closeAllMenus()">Các mẫu mới</a></li>
+    <li><a href="/cars?type=ev" onclick="closeAllMenus()">Mẫu xe điện</a></li>
+    <li><a href="/cars?type=hybrid" onclick="closeAllMenus()">Mẫu xe hybrid cắm sạc</a></li>
+  </ul>
+  <hr class="mega-menu-divider">
+  <ul class="mega-menu-list">
+    {#for cat in categories}
+    <li><a href="/cars?type={cat.name}" onclick="closeAllMenus()">{cat.name}</a></li>
+    {/for}
+  </ul>
+</div>
+
+<!-- Mua Menu -->
+<div class="mega-menu-panel" id="buyMenuPanel" role="dialog" aria-modal="true" aria-label="Mua">
+  <button class="mega-menu-close" onclick="closeAllMenus()" aria-label="Đóng">&#10005;</button>
+  <h2 class="mega-menu-title">Mua</h2>
+  <ul class="mega-menu-list">
+    <li><a href="/cars" onclick="closeAllMenus()">Xe mới</a></li>
+  </ul>
+  <hr class="mega-menu-divider">
+  <ul class="mega-menu-list">
+    <li><a href="/cars" onclick="closeAllMenus()">Ưu đãi mới nhất</a></li>
+    <li><a href="#" onclick="showMenuContent('doanh-nghiep')">Khối doanh nghiệp & khách hàng ưu tiên</a></li>
+    <li><a href="/cars" onclick="closeAllMenus()">Xe đã qua sử dụng</a></li>
+    <li><a href="#" onclick="showMenuContent('brochure')">Bảng giá & Brochure</a></li>
+  </ul>
+  <hr class="mega-menu-divider">
+  <ul class="mega-menu-list">
+    <li><a href="/cars" onclick="closeAllMenus()">Cấu hình xe</a></li>
+    <li><a href="#" onclick="openConsultationForm('Đăng ký lái thử dòng xe cao cấp')">Đặt lịch lái thử</a></li>
+  </ul>
+  <hr class="mega-menu-divider">
+  <ul class="mega-menu-list">
+    <li><a href="#" onclick="showMenuContent('phu-kien')">Phụ kiện kỹ thuật & bộ sưu tập</a></li>
+  </ul>
+</div>
+
+<!-- Dịch vụ Menu -->
+<div class="mega-menu-panel" id="serviceMenuPanel" role="dialog" aria-modal="true" aria-label="Dịch vụ">
+  <button class="mega-menu-close" onclick="closeAllMenus()" aria-label="Đóng">&#10005;</button>
+  <h2 class="mega-menu-title">Dịch vụ</h2>
+  <ul class="mega-menu-list">
+    <li><a href="#" onclick="showMenuContent('uu-dai-dich-vu')">Ưu đãi Dịch vụ khách hàng</a></li>
+  </ul>
+  <hr class="mega-menu-divider">
+  <ul class="mega-menu-list">
+    <li><a href="#" onclick="openConsultationForm('Đặt lịch hẹn bảo dưỡng & dịch vụ định kỳ')">Đặt lịch hẹn dịch vụ</a></li>
+    <li><a href="#" onclick="showMenuContent('sua-chua')">Dịch vụ & Sửa chữa</a></li>
+    <li><a href="#" onclick="showMenuContent('cuu-ho')">Dịch vụ hỗ trợ & cứu hộ</a></li>
+    <li><a href="#" onclick="openConsultationForm('Đăng ký tư vấn Bảo hiểm Xe cao cấp')">Bảo hiểm</a></li>
+  </ul>
+  <hr class="mega-menu-divider">
+  <ul class="mega-menu-list">
+    <li><a href="#" onclick="showMenuContent('huong-dan-su-dung')">Hướng dẫn sử dụng dành cho chủ sở hữu xe</a></li>
+    <li><a href="#" onclick="showMenuContent('lien-he')">Liên hệ & Chăm sóc khách hàng</a></li>
+  </ul>
+</div>
+
+<!-- Thương hiệu Menu -->
+<div class="mega-menu-panel" id="brandMenuPanel" role="dialog" aria-modal="true" aria-label="Thương hiệu">
+  <button class="mega-menu-close" onclick="closeAllMenus()" aria-label="Đóng">&#10005;</button>
+  <h2 class="mega-menu-title">Thương hiệu</h2>
+  <ul class="mega-menu-list">
+    <li><a href="#" onclick="showMenuContent('gioi-thieu')">Về showroom của chúng tôi</a></li>
+    <li><a href="/cars?type=ev" onclick="closeAllMenus()">Xe chạy điện</a></li>
+  </ul>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="container-fluid px-lg-5">
+    <div class="footer-top">
+      <div class="back-to-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">
+        <i class="bi bi-chevron-up"></i>
+        Lên trên
+      </div>
+    </div>
+
+    <div class="row footer-links g-4 justify-content-between">
+      <div class="col-6 col-md-2">
+        <h5>Các dòng xe</h5>
+        <ul>
+          <li><a href="/cars">Xe thuần điện EQ</a></li>
+          <li><a href="/cars">Sedan</a></li>
+          <li><a href="/cars">SUV</a></li>
+          <li><a href="/cars">Cabriolet và Roadster</a></li>
+          <li><a href="/cars">Siêu xe Thể thao</a></li>
+          <li><a href="/cars">Xe hạng sang đặc biệt</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-2">
+        <h5>Mua xe</h5>
+        <ul>
+          <li><a href="#">Ưu đãi mới nhất</a></li>
+          <li><a href="/cars">Tìm xe mới</a></li>
+          <li><a href="/cars">Tìm xe đã qua sử dụng</a></li>
+          <li><a href="#">Bảng giá & Brochure</a></li>
+          <li><a href="#">Cấu hình xe</a></li>
+          <li><a href="#">Khối doanh nghiệp & Khách hàng ưu tiên</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-2">
+        <h5>Tư vấn mua xe</h5>
+        <ul>
+          <li><a href="#">Yêu cầu tư vấn</a></li>
+          <li><a href="#">Đăng ký lái thử</a></li>
+          <li><a href="#">Tìm Nhà phân phối gần nhất</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-3">
+        <h5>Dịch vụ</h5>
+        <ul>
+          <li><a href="#">Ưu đãi dịch vụ</a></li>
+          <li><a href="#">Đặt hẹn dịch vụ</a></li>
+          <li><a href="#">Hướng dẫn sử dụng dành cho chủ sở hữu xe</a></li>
+          <li><a href="#">Phụ kiện chính hãng</a></li>
+          <li><a href="#">Bộ sưu tập Mercedes-Benz</a></li>
+          <li><a href="#">Triệu hồi</a></li>
+          <li><a href="#">Video Hướng Dẫn</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-2">
+        <h5>Khám phá</h5>
+        <ul>
+          <li><a href="#">Câu chuyện của chúng tôi</a></li>
+          <li><a href="#">Cơ hội việc làm</a></li>
+          <li><a href="#">Liên hệ</a></li>
+          <li><a href="#">Quyền riêng tư</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom-links">
+        <a href="#">Bản quyền nội dung</a>
+        <a href="#">Cài đặt</a>
+        <a href="#">Quyền riêng tư và bảo vệ dữ liệu</a>
+        <a href="#">Thông tin pháp lý</a>
+        <a href="#">Giấy phép FOSS</a>
+      </div>
+      <div class="d-flex align-items-center gap-4">
+        <div class="social-icons">
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-youtube"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-linkedin"></i></a>
+        </div>
+        <div class="footer-logo">
+          <i class="bi bi-car-front-fill" style="font-size: 1.5rem;"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // ----------------------------------------------------
+  // Dynamic Curated Premium Mercedes Vehicle Dataset
+  // ----------------------------------------------------
+  const premiumMercedesVehicles = [
+    {
+      id: 101,
+      title: "Mercedes-Maybach S 680 4MATIC",
+      brandName: "MERCEDES-MAYBACH",
+      categoryName: "Sedan",
+      price: 15990000000,
+      mileage: 0,
+      condition: "MOI",
+      color: "Đen Obsidian / Vàng Kalahari",
+      description: "Biểu tượng đỉnh cao của sự xa hoa thượng lưu. Sở hữu khối động cơ huyền thoại V12 BiTurbo 6.0L, không gian nội thất bọc da cao cấp Nappa Exclusive cùng ghế thương gia hạng nhất chỉnh điện đa hướng kèm sưởi ấm, thông gió, và massage đá nóng.",
+      fuelType: "XANG",
+      transmission: "SO_TU_DONG",
+      seats: 4,
+      engine: "6.0L V12 BiTurbo",
+      horsePower: 612,
+      displacement: 6.0,
+      design: "Sedan Siêu Sang",
+      image: "https://images.unsplash.com/photo-1627454820516-dc7671ceafef?q=80&w=1200&auto=format&fit=crop",
+      tags: ["Mới", "Maybach Edition"],
+      isPremium: true
+    },
+    {
+      id: 102,
+      title: "Mercedes-AMG GT 63 S E Performance",
+      brandName: "MERCEDES-AMG",
+      categoryName: "Coupé",
+      price: 11590000000,
+      mileage: 0,
+      condition: "MOI",
+      color: "Bạc Magno Sơn Mờ",
+      description: "Mẫu xe thương mại mạnh mẽ nhất lịch sử AMG. Sự kết hợp hoàn hảo giữa khối động cơ V8 BiTurbo 4.0L cực đại và công nghệ Hybrid Formula 1, cho khả năng tăng tốc không tưởng từ 0-100 km/h chỉ trong 2.9 giây.",
+      fuelType: "HYBRID",
+      transmission: "SO_TU_DONG",
+      seats: 4,
+      engine: "4.0L V8 + Motor Điện",
+      horsePower: 843,
+      displacement: 4.0,
+      design: "Sport Coupe 4-Door",
+      image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?q=80&w=1200&auto=format&fit=crop",
+      tags: ["Hiệu năng cao", "AMG Coupe"],
+      isPremium: true
+    },
+    {
+      id: 103,
+      title: "Mercedes-Benz EQS 580 4MATIC",
+      brandName: "MERCEDES-BENZ",
+      categoryName: "Điện",
+      price: 59590000000,
+      mileage: 0,
+      condition: "MOI",
+      color: "Xanh Sodolite",
+      description: "Tầm nhìn tương lai của Mercedes-Benz. Xe thuần điện siêu sang trang bị màn hình vô cực MBUX Hyperscreen rộng 141cm phủ toàn bộ bảng táp-lô, hệ thống dẫn động 4 bánh toàn thời gian và quãng đường di chuyển lên tới 600km sau một lần sạc.",
+      fuelType: "DIEN",
+      transmission: "SO_TU_DONG",
+      seats: 5,
+      engine: "Động cơ điện kép (Dual-Motor)",
+      horsePower: 516,
+      displacement: 0.0,
+      design: "Sedan thuần điện",
+      image: "https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=1200&auto=format&fit=crop",
+      tags: ["Mới", "Thuần Điện EQ"],
+      isPremium: true
+    },
+    {
+      id: 104,
+      title: "Mercedes-Benz GLS 450 4MATIC",
+      brandName: "MERCEDES-BENZ",
+      categoryName: "SUV",
+      price: 5389000000,
+      mileage: 0,
+      condition: "MOI",
+      color: "Trắng Polar",
+      description: "Mẫu SUV đầu bảng rộng rãi hàng đầu. Động cơ thế hệ mới tích hợp công nghệ Mild-Hybrid EQ Boost giúp xe lướt đi êm ái vượt trội. Khoang cabin full 7 chỗ tiện nghi, cửa sổ trời siêu rộng toàn cảnh Panoramic và hệ thống âm thanh Burmester đỉnh cao.",
+      fuelType: "XANG",
+      transmission: "SO_TU_DONG",
+      seats: 7,
+      engine: "3.0L I6 Mild-Hybrid",
+      horsePower: 367,
+      displacement: 3.0,
+      design: "SUV Cỡ Lớn",
+      image: "https://images.unsplash.com/photo-1503376760367-13eea3481f44?q=80&w=1200&auto=format&fit=crop",
+      tags: ["SUV Đa Dụng", "7 Chỗ"],
+      isPremium: true
+    },
+    {
+      id: 105,
+      title: "Mercedes-Benz E 300 AMG",
+      brandName: "MERCEDES-BENZ",
+      categoryName: "Sedan",
+      price: 3209000000,
+      mileage: 0,
+      condition: "MOI",
+      color: "Đỏ lục bảo",
+      description: "Vẻ lịch lãm cuốn hút đậm chất thể thao. Sở hữu gói ngoại thất AMG Line tinh xảo, hệ thống đèn chiếu sáng thông minh MULTIBEAM LED huyền ảo và hệ thống treo tự thích ứng AGILITY CONTROL cực kỳ thoải mái.",
+      fuelType: "XANG",
+      transmission: "SO_TU_DONG",
+      seats: 5,
+      engine: "2.0L Turbocharged",
+      horsePower: 258,
+      displacement: 2.0,
+      design: "Executive Sedan",
+      image: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=1200&auto=format&fit=crop",
+      tags: ["Sang Trọng", "AMG Line"],
+      isPremium: true
+    },
+    {
+      id: 106,
+      title: "Mercedes-Benz C 300 AMG",
+      brandName: "MERCEDES-BENZ",
+      categoryName: "Sedan",
+      price: 2099000000,
+      mileage: 0,
+      condition: "MOI",
+      color: "Xám Graphite",
+      description: "Năng động, cá tính dẫn đầu xu hướng công nghệ. Bảng điều khiển cảm ứng trung tâm siêu nét 11.9 inch giống dòng S-class đẳng cấp, hệ thống hiển thị thông tin kính lái HUD hiện đại và khả năng bứt tốc vượt bậc.",
+      fuelType: "XANG",
+      transmission: "SO_TU_DONG",
+      seats: 5,
+      engine: "2.0L Mild-Hybrid",
+      horsePower: 258,
+      displacement: 2.0,
+      design: "Sport Sedan",
+      image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=1200&auto=format&fit=crop",
+      tags: ["Bán chạy", "Công Nghệ"],
+      isPremium: true
+    },
+    {
+      id: 107,
+      title: "Mercedes-Benz GLC 300 4MATIC",
+      brandName: "MERCEDES-BENZ",
+      categoryName: "SUV",
+      price: 2799000000,
+      mileage: 0,
+      condition: "MOI",
+      color: "Xanh Cavansite",
+      description: "Dòng SUV bán chạy số một Việt Nam. Phiên bản GLC thế hệ mới được trau chuốt từng đường nét thiết kế, trang bị gói thể thao AMG cao cấp, khoang lái kỹ thuật số tuyệt đẹp cùng khả năng off-road mượt mà linh hoạt.",
+      fuelType: "XANG",
+      transmission: "SO_TU_DONG",
+      seats: 5,
+      engine: "2.0L I4 EQ Boost",
+      horsePower: 258,
+      displacement: 2.0,
+      design: "SUV 5 Chỗ",
+      image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=1200&auto=format&fit=crop",
+      tags: ["SUV Gia Đình", "Hot"],
+      isPremium: true
+    }
+  ];
+
+  // ----------------------------------------------------
+  // Load database listings passed from Backend
+  // ----------------------------------------------------
+  const dbListings = [
+    {#for listing in listings}
+    {
+      id: {listing.id},
+      title: "{listing.title}",
+      brandName: "{listing.car.brand.name}",
+      categoryName: "{listing.car.category.name}",
+      price: {listing.price},
+      mileage: {listing.mileage},
+      condition: "{listing.condition}",
+      color: "{listing.color ?: ''}",
+      description: "{listing.description ?: ''}",
+      fuelType: "{listing.car.fuelType}",
+      transmission: "{listing.car.transmission}",
+      seats: {listing.car.seats},
+      engine: "{listing.car.engine ?: 'Đang cập nhật'}",
+      horsePower: {listing.car.horsePower ?: '150'},
+      displacement: {listing.car.displacement ?: '2.0'},
+      design: "{listing.car.design ?: 'Sedan'}",
+      tags: ["Chính chủ", "{#if listing.condition == 'MOI'}Xe Mới{#else}Xe Lướt{/if}"],
+      isPremium: false
+    },
+    {/for}
+  ];
+
+  // ----------------------------------------------------
+  // Dynamic Unsplash fallback photos mapping for general listings
+  // ----------------------------------------------------
+  function getCarFallbackPhoto(item) {
+    const title = item.title.toLowerCase();
+    const brand = item.brandName.toLowerCase();
+    
+    if (brand.includes("toyota")) {
+      return "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?q=80&w=800&auto=format&fit=crop";
+    } else if (brand.includes("mazda")) {
+      return "https://images.unsplash.com/photo-1503376760367-13eea3481f44?q=80&w=800&auto=format&fit=crop";
+    } else if (brand.includes("vinfast") || brand.includes("fast")) {
+      return "https://images.unsplash.com/photo-1563720223185-11003d516935?q=80&w=800&auto=format&fit=crop";
+    } else if (brand.includes("honda")) {
+      return "https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=800&auto=format&fit=crop";
+    }
+    return "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=800&auto=format&fit=crop";
+  }
+
+  // Combine both sources
+  let allVehicles = [...premiumMercedesVehicles];
+  
+  // Format dbListings to adapt
+  dbListings.forEach(item => {
+    item.image = getCarFallbackPhoto(item);
+    allVehicles.push(item);
+  });
+
+  // Extract Categories dynamically for Sidebar checkboxes
+  const uniqueCategories = [...new Set(allVehicles.map(v => v.categoryName))];
+  
+  // ----------------------------------------------------
+  // Filters State Management
+  // ----------------------------------------------------
+  let activeBrandTab = "ALL";
+  let searchKeyword = "";
+  let pillFilters = {
+    new: false,
+    electric: false,
+    hybrid: false
+  };
+  let selectedCategories = [];
+  let selectedFuels = [];
+  let selectedTransmissions = [];
+  let priceFilterMode = "ALL"; // ALL, UNDER_3, 3_TO_6, OVER_6
+
+  // ----------------------------------------------------
+  // App initialization
+  // ----------------------------------------------------
+  document.addEventListener("DOMContentLoaded", () => {
+    // Parse URL parameters for automatic navigation filtering
+    const params = new URLSearchParams(window.location.search);
+    const filter = params.get("filter");
+    const type = params.get("type");
+    
+    if (filter === "new") {
+      pillFilters.new = true;
+      document.getElementById("pillNew").classList.add("active");
+    } else if (filter === "electric" || type === "ev") {
+      pillFilters.electric = true;
+      document.getElementById("pillElectric").classList.add("active");
+    } else if (filter === "hybrid" || type === "hybrid") {
+      pillFilters.hybrid = true;
+      document.getElementById("pillHybrid").classList.add("active");
+    }
+    
+    if (type && type !== "ev" && type !== "hybrid") {
+      let catName = "";
+      if (type === "sedan") catName = "Sedan";
+      else if (type === "suv") catName = "SUV";
+      else if (type === "coupe") catName = "Coupé";
+      else if (type === "cabriolet") catName = "Cabriolet";
+      else if (type === "sport") catName = "Xe đa dụng";
+      
+      if (!catName) {
+        const decodedType = decodeURIComponent(type).toLowerCase().trim();
+        const matchedCat = uniqueCategories.find(c => c.toLowerCase() === decodedType);
+        if (matchedCat) {
+          catName = matchedCat;
+        }
+      }
+      
+      if (catName) {
+        selectedCategories.push(catName);
+      }
+    }
+    
+    renderCategoryFilters();
+    
+    // Check checkboxes visually after rendering them
+    selectedCategories.forEach(cat => {
+      const input = document.getElementById('cat-' + cat);
+      if (input) {
+        input.checked = true;
+      }
+    });
+    
+    renderCarsGrid();
+  });
+
+  // Render Checkbox categories sidebar dynamically
+  function renderCategoryFilters() {
+    const container = document.getElementById("categoryFilters");
+    container.innerHTML = "";
+    
+    uniqueCategories.forEach(cat => {
+      const count = allVehicles.filter(v => v.categoryName === cat).length;
+      
+      const label = document.createElement("label");
+      label.className = "custom-check";
+      label.onclick = () => toggleCategoryCheck(cat);
+      
+      label.innerHTML = 
+        '<input type="checkbox" id="cat-' + cat + '">' +
+        '<span class="custom-check-box"></span>' +
+        '<span class="custom-check-label">' + cat + '</span>' +
+        '<span class="custom-check-count">(' + count + ')</span>';
+      container.appendChild(label);
+    });
+  }
+
+  // Handle Brand Top Tab Change
+  function setBrandTab(brandKey, element) {
+    // Update active classes on buttons
+    document.querySelectorAll(".brand-tab").forEach(btn => btn.classList.remove("active"));
+    element.classList.add("active");
+    
+    activeBrandTab = brandKey;
+    renderCarsGrid();
+  }
+
+  // Toggle quick pill filter buttons
+  function togglePillFilter(pillKey) {
+    const btn = document.getElementById('pill' + pillKey.charAt(0).toUpperCase() + pillKey.slice(1));
+    pillFilters[pillKey] = !pillFilters[pillKey];
+    
+    if (pillFilters[pillKey]) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+    renderCarsGrid();
+  }
+
+  // Handle Checkbox Category Toggle
+  function toggleCategoryCheck(cat) {
+    const idx = selectedCategories.indexOf(cat);
+    if (idx > -1) {
+      selectedCategories.splice(idx, 1);
+    } else {
+      selectedCategories.push(cat);
+    }
+    // Update visual input state is done via CSS, but trigger filters
+    setTimeout(renderCarsGrid, 50);
+  }
+
+  // Handle Fuel Filter
+  function toggleFuelCheck(fuel) {
+    const idx = selectedFuels.indexOf(fuel);
+    if (idx > -1) {
+      selectedFuels.splice(idx, 1);
+    } else {
+      selectedFuels.push(fuel);
+    }
+    setTimeout(renderCarsGrid, 50);
+  }
+
+  // Handle Transmission Filter
+  function toggleTransCheck(trans) {
+    const idx = selectedTransmissions.indexOf(trans);
+    if (idx > -1) {
+      selectedTransmissions.splice(idx, 1);
+    } else {
+      selectedTransmissions.push(trans);
+    }
+    setTimeout(renderCarsGrid, 50);
+  }
+
+  function setPriceFilter(mode) {
+    document.querySelectorAll(".price-quick-btn").forEach(btn => btn.classList.remove("active"));
+    
+    let btnId = "priceBtnAll";
+    if (mode === "UNDER_3") btnId = "priceBtnUnder3";
+    else if (mode === "3_TO_6") btnId = "priceBtn3to6";
+    else if (mode === "OVER_6") btnId = "priceBtnOver6";
+    
+    document.getElementById(btnId).classList.add("active");
+    
+    priceFilterMode = mode;
+    renderCarsGrid();
+  }
+
+  // Trigger search from typing
+  function triggerFilters() {
+    searchKeyword = document.getElementById("searchInput").value.trim().toLowerCase();
+    renderCarsGrid();
+  }
+
+  // Reset all filters to default
+  function resetFilters() {
+    activeBrandTab = "ALL";
+    searchKeyword = "";
+    pillFilters = { new: false, electric: false, hybrid: false };
+    selectedCategories = [];
+    selectedFuels = [];
+    selectedTransmissions = [];
+    priceFilterMode = "ALL";
+    
+    // Reset inputs visually
+    document.getElementById("searchInput").value = "";
+    document.querySelectorAll(".brand-tab").forEach((btn, idx) => {
+      if (idx === 0) btn.classList.add("active");
+      else btn.classList.remove("active");
+    });
+    
+    document.querySelectorAll(".pill-select").forEach(btn => btn.classList.remove("active"));
+    document.querySelectorAll(".custom-check input").forEach(input => input.checked = false);
+    
+    document.querySelectorAll(".price-quick-btn").forEach(btn => btn.classList.remove("active"));
+    document.getElementById("priceBtnAll").classList.add("active");
+    
+    renderCarsGrid();
+  }
+
+  // ----------------------------------------------------
+  // GRID RENDERING & CORE LOGIC
+  // ----------------------------------------------------
+  function renderCarsGrid() {
+    const grid = document.getElementById("carsGrid");
+    const emptyState = document.getElementById("emptyState");
+    const countEl = document.getElementById("resultsCount");
+    
+    grid.innerHTML = "";
+    
+    // Filter logic
+    const filtered = allVehicles.filter(car => {
+      // 1. Brand Tab
+      if (activeBrandTab === "MERCEDES-BENZ" && car.brandName !== "MERCEDES-BENZ") return false;
+      if (activeBrandTab === "MERCEDES-AMG" && car.brandName !== "MERCEDES-AMG") return false;
+      if (activeBrandTab === "MERCEDES-MAYBACH" && car.brandName !== "MERCEDES-MAYBACH") return false;
+      if (activeBrandTab === "OTHER" && ["MERCEDES-BENZ", "MERCEDES-AMG", "MERCEDES-MAYBACH"].includes(car.brandName)) return false;
+      
+      // 2. Search Keyword
+      if (searchKeyword) {
+        const text = (car.title + " " + car.categoryName + " " + car.brandName + " " + car.engine + " " + car.color + " " + car.design).toLowerCase();
+        if (!text.includes(searchKeyword)) return false;
+      }
+      
+      // 3. Pill Quick Filters
+      if (pillFilters.new && !car.tags.some(t => t.toLowerCase().includes("mới"))) return false;
+      if (pillFilters.electric && car.fuelType !== "DIEN") return false;
+      if (pillFilters.hybrid && car.fuelType !== "HYBRID") return false;
+      
+      // 4. Category Checkboxes
+      if (selectedCategories.length > 0 && !selectedCategories.includes(car.categoryName)) return false;
+      
+      // 5. Fuel Checkboxes
+      if (selectedFuels.length > 0 && !selectedFuels.includes(car.fuelType)) return false;
+      
+      // 6. Transmission Checkboxes
+      if (selectedTransmissions.length > 0 && !selectedTransmissions.includes(car.transmission)) return false;
+      
+      // 7. Price Mode
+      if (priceFilterMode === "UNDER_3" && car.price >= 3000000000) return false;
+      if (priceFilterMode === "3_TO_6" && (car.price < 3000000000 || car.price > 6000000000)) return false;
+      if (priceFilterMode === "OVER_6" && car.price <= 6000000000) return false;
+      
+      return true;
+    });
+
+    // Handle Empty State
+    if (filtered.length === 0) {
+      emptyState.classList.remove("d-none");
+      countEl.innerText = "0 mẫu xe có sẵn";
+      return;
+    }
+    emptyState.classList.add("d-none");
+    countEl.innerText = filtered.length + ' mẫu xe có sẵn';
+    
+    // Populate Grid
+    filtered.forEach(car => {
+      const col = document.createElement("div");
+      col.className = "col-md-6 col-xl-4 fade-item";
+      
+      // Generate tags badges
+      let badgeHtml = "";
+      if (car.tags.includes("Mới")) {
+        badgeHtml += '<span class="car-badge car-badge-new">MỚI</span>';
+      }
+      if (car.fuelType === "DIEN") {
+        badgeHtml += '<span class="car-badge car-badge-electric">THUẦN ĐIỆN EQ</span>';
+      } else if (car.fuelType === "HYBRID") {
+        badgeHtml += '<span class="car-badge car-badge-hybrid">HYBRID</span>';
+      } else if (car.isPremium) {
+        badgeHtml += '<span class="car-badge car-badge-premium">SHOWROOM</span>';
+      }
+      
+      const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+                                  .format(car.price)
+                                  .replace("₫", "đ");
+      
+      col.innerHTML = 
+        '<div class="car-card">' +
+          '<div class="car-card-img-container">' +
+            '<div class="car-badge-overlay">' + badgeHtml + '</div>' +
+            '<img src="' + car.image + '" class="car-card-img" alt="' + car.title + '" onerror="this.src=\'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=800\'">' +
+          '</div>' +
+          '<div class="car-card-body">' +
+            '<span class="car-brand-tag">' + car.brandName + '</span>' +
+            '<h4 class="car-name-title serif">' + car.title + '</h4>' +
+            
+            '<div class="car-specs-grid">' +
+              '<div class="spec-item">' +
+                '<i class="bi bi-ev-front"></i>' +
+                '<span>' + (car.fuelType === 'DIEN' ? 'Điện' : car.fuelType === 'HYBRID' ? 'Plug-in Hybrid' : 'Xăng / Dầu') + '</span>' +
+              '</div>' +
+              '<div class="spec-item">' +
+                '<i class="bi bi-gear-fill"></i>' +
+                '<span>' + (car.transmission === 'SO_SAN' ? 'Số sàn' : 'Số tự động') + '</span>' +
+              '</div>' +
+              '<div class="spec-item">' +
+                '<i class="bi bi-speedometer2"></i>' +
+                '<span>' + car.horsePower + ' Mã lực (HP)</span>' +
+              '</div>' +
+              '<div class="spec-item">' +
+                '<i class="bi bi-people-fill"></i>' +
+                '<span>' + car.seats + ' Chỗ ngồi</span>' +
+              '</div>' +
+            '</div>' +
+            
+            '<div class="car-price-row">' +
+              '<span class="car-price-lbl">Giá bán niêm yết</span>' +
+              '<span class="car-price-val">' + formattedPrice + '</span>' +
+            '</div>' +
+            
+            '<div class="car-actions">' +
+              '<button class="btn-card-outline" onclick="openDetailsModal(' + car.id + ')">Chi tiết thông số</button>' +
+              '<button class="btn-card-solid" onclick="openConsultationForm(\'' + car.title.replace(/'/g, "\\'") + '\')">Yêu cầu báo giá</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      grid.appendChild(col);
+    });
+  }
+
+  // ----------------------------------------------------
+  // DETAILS MODAL & CUSTOMER CONSULTATION FORMS
+  // ----------------------------------------------------
+  let currentlySelectedCarId = null;
+  let currentlySelectedCarTitle = "";
+
+  function openDetailsModal(carId) {
+    const car = allVehicles.find(v => v.id === carId);
+    if (!car) return;
+    
+    currentlySelectedCarId = carId;
+    currentlySelectedCarTitle = car.title;
+    
+    document.getElementById("modalCarName").innerText = car.title;
+    document.getElementById("modalCarImage").src = car.image;
+    document.getElementById("modalCarDesc").innerText = car.description || "Mẫu xe cao cấp sở hữu thông số vượt trội cùng thiết kế đỉnh cao.";
+    document.getElementById("modalCarFuel").innerText = car.fuelType === 'DIEN' ? 'Điện' : car.fuelType === 'HYBRID' ? 'Plug-in Hybrid' : 'Xăng / Dầu';
+    document.getElementById("modalCarTrans").innerText = car.transmission === 'SO_SAN' ? 'Số sàn (Manual)' : 'Tự động (Automatic)';
+    document.getElementById("modalCarHP").innerText = car.horsePower + " HP";
+    document.getElementById("modalCarSeats").innerText = car.seats + " Chỗ";
+    document.getElementById("modalCarDisp").innerText = car.displacement > 0 ? (car.displacement + " Lít") : "Động cơ điện";
+    
+    const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+                                .format(car.price)
+                                .replace("₫", "đ");
+    document.getElementById("modalCarPrice").innerText = formattedPrice;
+    
+    // Open Bootstrap Modal
+    const myModal = new bootstrap.Modal(document.getElementById('carDetailsModal'));
+    myModal.show();
+  }
+
+  function openConsultationForm(carTitle = "") {
+    closeAllMenus();
+    // Close detail modal if open
+    const detailModalEl = document.getElementById('carDetailsModal');
+    if (detailModalEl) {
+      const detailModal = bootstrap.Modal.getInstance(detailModalEl);
+      if (detailModal) {
+        detailModal.hide();
+      }
+    }
+    
+    const title = carTitle || currentlySelectedCarTitle || "Tư vấn dòng xe cao cấp";
+    document.getElementById("formCarModel").value = title;
+    
+    // Open Consultation Modal
+    const consultModal = new bootstrap.Modal(document.getElementById('consultationModal'));
+    consultModal.show();
+  }
+
+  function submitConsultation(event) {
+    event.preventDefault();
+    
+    // Get values
+    const carModel = document.getElementById("formCarModel").value;
+    const clientName = document.getElementById("formCustomerName").value;
+    const clientPhone = document.getElementById("formCustomerPhone").value;
+    const clientRegion = document.getElementById("formCustomerRegion").value;
+    
+    // Close Modal
+    const consultModalEl = document.getElementById('consultationModal');
+    const consultModal = bootstrap.Modal.getInstance(consultModalEl);
+    if (consultModal) {
+      consultModal.hide();
+    }
+    
+    // Show success float alert
+    const alertBox = document.getElementById("successAlert");
+    alertBox.querySelector('strong').innerText = "Gửi thành công!";
+    alertBox.querySelector('span').innerText = "Chuyên viên sẽ liên hệ trong ít phút.";
+    alertBox.classList.add("show");
+    
+    // Reset Form
+    document.getElementById("consultationForm").reset();
+    
+    // Hide alert after 4 seconds
+    setTimeout(() => {
+      alertBox.classList.remove("show");
+    }, 4000);
+  }
+
+  // ----------------------------------------------------
+  // MEGA MENU OPERATIONS & DYNAMIC CONTENT
+  // ----------------------------------------------------
+  function openMenu(menuId) {
+    closeAllMenus();
+    document.getElementById('megaMenuOverlay').classList.add('open');
+    document.getElementById(menuId).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function openMegaMenu() {
+    openMenu('megaMenuPanel');
+  }
+  function closeAllMenus() {
+    document.getElementById('megaMenuOverlay').classList.remove('open');
+    document.querySelectorAll('.mega-menu-panel').forEach(panel => {
+      panel.classList.remove('open');
+    });
+    document.body.style.overflow = '';
+  }
+  function closeMegaMenu() {
+    closeAllMenus();
+  }
+
+  function showMenuContent(type) {
+    closeAllMenus();
+    const titleEl = document.getElementById("menuContentTitle");
+    const bodyEl = document.getElementById("menuContentBody");
+    
+    let title = "";
+    let bodyHtml = "";
+    
+    if (type === 'doanh-nghiep') {
+      title = "Khối Doanh Nghiệp & Khách Hàng Ưu Tiên";
+      bodyHtml = 
+        '<div class="p-3 text-center">' +
+          '<i class="bi bi-award-fill text-warning mb-3" style="font-size: 3.5rem;"></i>' +
+          '<p class="text-muted mb-4">Chương trình đặc quyền dành riêng cho Hội viên Cao cấp & Đối tác Doanh nghiệp Chiến lược.</p>' +
+        '</div>' +
+        '<div class="table-responsive">' +
+          '<table class="table table-dark table-striped border border-dark align-middle text-center">' +
+            '<thead>' +
+              '<tr><th>Cấp bậc</th><th>Chiết khấu tối đa</th><th>Hỗ trợ tài chính</th><th>Bảo dưỡng đặc quyền</th></tr>' +
+            '</thead>' +
+            '<tbody>' +
+              '<tr><td>Silver</td><td>1.5%</td><td>Lãi suất ưu đãi</td><td>1 năm miễn phí</td></tr>' +
+              '<tr><td>Gold</td><td>3.0%</td><td>Hỗ trợ 50% trước bạ</td><td>2 năm miễn phí</td></tr>' +
+              '<tr><td class="text-warning fw-bold">Diamond Platinum</td><td class="text-warning fw-bold">5.0%</td><td>Lãi suất 0% 12 tháng</td><td>Trọn đời VIP Care</td></tr>' +
+            '</tbody>' +
+          '</table>' +
+        '</div>' +
+        '<button class="btn btn-lux-order mt-4 py-3" onclick="openConsultationForm(\'Tư vấn VIP Corporate Partner\')">ĐĂNG KÝ HỘI VIÊN DOANH NGHIỆP</button>';
+    } else if (type === 'brochure') {
+      title = "Bảng Giá & Brochure Tài Liệu";
+      bodyHtml = 
+        '<p class="text-muted mb-4">Tải trực tiếp cẩm nang kỹ thuật số và bảng giá chính hãng mới nhất của Showroom chúng tôi.</p>' +
+        '<div class="d-flex flex-column gap-3">' +
+          '<div class="p-3 border border-dark d-flex justify-content-between align-items-center bg-black">' +
+            '<div>' +
+              '<h6 class="text-white mb-1"><i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i>Brochure Dòng Xe Sedan & Coupe Hạng Sang</h6>' +
+              '<span class="text-muted" style="font-size:0.75rem;">Định dạng PDF (12.4 MB) • Cập nhật 2026</span>' +
+            '</div>' +
+            '<button class="btn btn-outline-light btn-sm px-3" style="border-radius:0;" onclick="triggerDownloadNotification()">Tải xuống</button>' +
+          '</div>' +
+          '<div class="p-3 border border-dark d-flex justify-content-between align-items-center bg-black">' +
+            '<div>' +
+              '<h6 class="text-white mb-1"><i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i>Brochure Dòng Xe SUV & Siêu Xe Thể Thao</h6>' +
+              '<span class="text-muted" style="font-size:0.75rem;">Định dạng PDF (18.1 MB) • Cập nhật 2026</span>' +
+            '</div>' +
+            '<button class="btn btn-outline-light btn-sm px-3" style="border-radius:0;" onclick="triggerDownloadNotification()">Tải xuống</button>' +
+          '</div>' +
+          '<div class="p-3 border border-dark d-flex justify-content-between align-items-center bg-black">' +
+            '<div>' +
+              '<h6 class="text-white mb-1"><i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i>Bảng Giá Tổng Hợp Xe Showroom</h6>' +
+              '<span class="text-muted" style="font-size:0.75rem;">Định dạng PDF (4.2 MB) • Hiệu lực từ 01/2026</span>' +
+            '</div>' +
+            '<button class="btn btn-outline-light btn-sm px-3" style="border-radius:0;" onclick="triggerDownloadNotification()">Tải xuống</button>' +
+          '</div>' +
+        '</div>';
+    } else if (type === 'phu-kien') {
+      title = "Phụ Kiện Chính Hãng & Bộ Sưu Tập Thời Trang";
+      bodyHtml = 
+        '<p class="text-muted mb-4">Các phụ phẩm cao cấp nâng tầm phong cách sống đẳng cấp thượng lưu cùng chiếc xe của bạn.</p>' +
+        '<div class="row g-3">' +
+          '<div class="col-sm-6 col-md-4">' +
+            '<div class="border border-dark bg-black p-2 text-center h-100">' +
+              '<img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=300&auto=format&fit=crop" class="img-fluid mb-2" style="height:120px; object-fit:cover; width:100%;" alt="Đồng hồ">' +
+              '<h6 class="text-white mb-1" style="font-size:0.85rem;">Đồng Hồ Chronograph VIP</h6>' +
+              '<span class="text-warning fw-semibold d-block" style="font-size:0.8rem;">18.500.000 đ</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="col-sm-6 col-md-4">' +
+            '<div class="border border-dark bg-black p-2 text-center h-100">' +
+              '<img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?q=80&w=300&auto=format&fit=crop" class="img-fluid mb-2" style="height:120px; object-fit:cover; width:100%;" alt="Vali">' +
+              '<h6 class="text-white mb-1" style="font-size:0.85rem;">Vali Sợi Carbon Cruiser</h6>' +
+              '<span class="text-warning fw-semibold d-block" style="font-size:0.8rem;">12.000.000 đ</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="col-sm-6 col-md-4">' +
+            '<div class="border border-dark bg-black p-2 text-center h-100">' +
+              '<img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?q=80&w=300&auto=format&fit=crop" class="img-fluid mb-2" style="height:120px; object-fit:cover; width:100%;" alt="Bao da">' +
+              '<h6 class="text-white mb-1" style="font-size:0.85rem;">Bao Da Khóa Cá Sấu Pháp</h6>' +
+              '<span class="text-warning fw-semibold d-block" style="font-size:0.8rem;">1.800.000 đ</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<button class="btn btn-lux-order mt-4 py-3" onclick="openConsultationForm(\'Tư vấn mua phụ kiện cao cấp\')">ĐĂNG KÝ MUA SẮM PHỤ KIỆN</button>';
+    } else if (type === 'uu-dai-dich-vu') {
+      title = "Ưu Đãi Dịch Vụ Khách Hàng";
+      bodyHtml = 
+        '<p class="text-muted mb-4">Các chương trình ưu đãi đặc quyền bảo dưỡng xe chính hãng áp dụng tại toàn bộ hệ thống đại lý.</p>' +
+        '<div class="d-flex flex-column gap-3">' +
+          '<div class="p-3 border border-warning bg-black">' +
+            '<span class="badge bg-warning text-black mb-2" style="font-size:0.65rem; font-weight:700;">ĐẶC QUYỀN MỚI</span>' +
+            '<h6 class="text-white mb-1">Miễn Phí Bảo Dưỡng 1.000 KM Đầu Tiên</h6>' +
+            '<p class="text-muted mb-0" style="font-size:0.8rem;">Áp dụng cho tất cả khách hàng bàn giao xe mới trong năm 2026.</p>' +
+          '</div>' +
+          '<div class="p-3 border border-dark bg-black">' +
+            '<h6 class="text-white mb-1">Ưu Đãi 20% Dịch Vụ Đánh Bóng & Phủ Ceramic</h6>' +
+            '<p class="text-muted mb-0" style="font-size:0.8rem;">Chăm sóc vẻ ngoài hoàn mỹ cho xế yêu trước các dịp lễ lớn.</p>' +
+          '</div>' +
+          '<div class="p-3 border border-dark bg-black">' +
+            '<h6 class="text-white mb-1">Miễn Phí Kiểm Tra Tổng Thể Xe 24 Hạng Mục</h6>' +
+            '<p class="text-muted mb-0" style="font-size:0.8rem;">Đảm bảo vận hành bền bỉ tuyệt đối trên các chuyến hành trình xa.</p>' +
+          '</div>' +
+        '</div>' +
+        '<button class="btn btn-lux-order mt-4 py-3" onclick="openConsultationForm(\'Đăng ký nhận ưu đãi dịch vụ\')">NHẬN ƯU ĐÃI NGAY</button>';
+    } else if (type === 'sua-chua') {
+      title = "Quy Trình Dịch Vụ & Sửa Chữa Đạt Chuẩn 5 Sao";
+      bodyHtml = 
+        '<div class="row align-items-center g-3">' +
+          '<div class="col-md-6">' +
+            '<p class="text-muted" style="font-size:0.9rem; line-height:1.6;">Chúng tôi tự hào sở hữu trung tâm dịch vụ kỹ thuật được trang bị trang thiết bị chẩn đoán điện tử tối tân, hệ thống phòng sơn sấy thế hệ mới và kho phụ tùng chính hãng nhập khẩu 100%.</p>' +
+            '<p class="text-muted" style="font-size:0.9rem; line-height:1.6;">Đội ngũ kỹ sư tay nghề cao được đào tạo bài bản theo chứng chỉ quốc tế cam kết chăm sóc chiếc xe của bạn hoàn hảo từng chi tiết nhỏ nhất.</p>' +
+          '</div>' +
+          '<div class="col-md-6">' +
+            '<img src="https://images.unsplash.com/photo-1486006920555-c77dce18193b?q=80&w=400&auto=format&fit=crop" class="img-fluid border border-dark" style="height:200px; object-fit:cover; width:100%;" alt="Kỹ thuật viên">' +
+          '</div>' +
+        '</div>' +
+        '<button class="btn btn-lux-order mt-4 py-3" onclick="openConsultationForm(\'Đặt lịch dịch vụ & sửa chữa\')">ĐẶT LỊCH SỬA CHỮA CHUYÊN NGHIỆP</button>';
+    } else if (type === 'cuu-ho') {
+      title = "Hỗ Trợ Khẩn Cấp & Cứu Hộ 24/7";
+      bodyHtml = 
+        '<div class="p-4 border border-danger text-center bg-black mb-4">' +
+          '<i class="bi bi-telephone-fill text-danger mb-2 d-block" style="font-size: 2rem;"></i>' +
+          '<h5 class="text-white mb-2" style="letter-spacing:1px;">HOTLINE SƠ CỨU NỔI KHẨN CẤP</h5>' +
+          '<h2 class="text-danger fw-bold mb-3">1900 8888 (Phím 9)</h2>' +
+          '<p class="text-muted mb-0" style="font-size:0.85rem;">Hoạt động liên tục 24 giờ mỗi ngày, 7 ngày một tuần kể cả ngày Lễ & Tết.</p>' +
+        '</div>' +
+        '<div class="d-flex flex-column gap-3 text-muted" style="font-size:0.85rem; line-height:1.5;">' +
+          '<div class="d-flex align-items-start gap-2"><i class="bi bi-shield-check text-success"></i><span>Đội ngũ cứu hộ có mặt tại hiện trường trong 30-45 phút.</span></div>' +
+          '<div class="d-flex align-items-start gap-2"><i class="bi bi-shield-check text-success"></i><span>Hỗ trợ kéo xe về trung tâm dịch vụ ủy quyền gần nhất.</span></div>' +
+          '<div class="d-flex align-items-start gap-2"><i class="bi bi-shield-check text-success"></i><span>Hỗ trợ kỹ thuật tại chỗ cho các lỗi nhỏ (kích bình, vá vỏ).</span></div>' +
+        '</div>';
+    } else if (type === 'huong-dan-su-dung') {
+      title = "Cẩm Nang & Hướng Dẫn Sử Dụng Điện Tử";
+      bodyHtml = 
+        '<p class="text-muted mb-4">Tra cứu nhanh hướng dẫn vận hành kỹ thuật số cho chiếc xe sang của bạn để tận hưởng trọn vẹn tiện ích công nghệ.</p>' +
+        '<div class="d-flex flex-column gap-3">' +
+          '<div class="p-3 border border-dark bg-black d-flex justify-content-between align-items-center">' +
+            '<div>' +
+              '<h6 class="text-white mb-0"><i class="bi bi-book-half text-info me-2"></i>Hướng Dẫn Vận Hành Xe Điện EQ Hạng Sang</h6>' +
+              '<span class="text-muted" style="font-size:0.75rem;">Ấn bản Tiếng Việt • 248 trang (PDF)</span>' +
+            '</div>' +
+            '<button class="btn btn-outline-light btn-sm" style="border-radius:0;" onclick="triggerDownloadNotification()">Xem ngay</button>' +
+          '</div>' +
+          '<div class="p-3 border border-dark bg-black d-flex justify-content-between align-items-center">' +
+            '<div>' +
+              '<h6 class="text-white mb-0"><i class="bi bi-book-half text-info me-2"></i>Cẩm Nang Sử Dụng Màn Hình Hyperscreen & MBUX</h6>' +
+              '<span class="text-muted" style="font-size:0.75rem;">Ấn bản Tiếng Việt • 115 trang (PDF)</span>' +
+            '</div>' +
+            '<button class="btn btn-outline-light btn-sm" style="border-radius:0;" onclick="triggerDownloadNotification()">Xem ngay</button>' +
+          '</div>' +
+        '</div>';
+    } else if (type === 'lien-he') {
+      title = "Liên Hệ & Chăm Sóc Khách Hàng";
+      bodyHtml = 
+        '<div class="row g-4">' +
+          '<div class="col-md-6">' +
+            '<h6 class="text-white mb-3" style="letter-spacing:1px;">THÔNG TIN ĐẠI LÝ</h6>' +
+            '<p class="text-muted mb-2"><i class="bi bi-geo-alt-fill text-white me-2"></i><strong>Địa chỉ:</strong> Số 123 Đại Lộ Ánh Sáng, Quận 1, TP. Hồ Chí Minh</p>' +
+            '<p class="text-muted mb-2"><i class="bi bi-envelope-fill text-white me-2"></i><strong>Email:</strong> contact@premiumshowroom.com</p>' +
+            '<p class="text-muted mb-4"><i class="bi bi-clock-fill text-white me-2"></i><strong>Giờ mở cửa:</strong> 08:00 - 20:00 (Tất cả các ngày trong tuần)</p>' +
+          '</div>' +
+          '<div class="col-md-6">' +
+            '<h6 class="text-white mb-3" style="letter-spacing:1px;">GỬI YÊU CẦU CHO BAN QUẢN TRỊ</h6>' +
+            '<form onsubmit="event.preventDefault(); triggerMessageNotification();">' +
+              '<input type="text" class="lux-input mb-2" placeholder="Họ và tên của bạn" required>' +
+              '<input type="email" class="lux-input mb-2" placeholder="Email liên hệ" required>' +
+              '<textarea class="lux-input mb-3" placeholder="Lời nhắn của bạn gửi đến chúng tôi..." rows="3" required></textarea>' +
+              '<button type="submit" class="btn btn-lux-order py-2 btn-sm">GỬI LỜI NHẮN</button>' +
+            '</form>' +
+          '</div>' +
+        '</div>';
+    } else if (type === 'gioi-thieu') {
+      title = "Về Showroom Cao Cấp Của Chúng Tôi";
+      bodyHtml = 
+        '<div class="row align-items-center g-4">' +
+          '<div class="col-md-5">' +
+            '<img src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=400&auto=format&fit=crop" class="img-fluid border border-dark" style="height:250px; object-fit:cover; width:100%;" alt="Showroom">' +
+          '</div>' +
+          '<div class="col-md-7">' +
+            '<h5 class="serif text-white mb-3">Tôn vinh nghệ thuật di chuyển sang trọng</h5>' +
+            '<p class="text-muted" style="line-height:1.7; font-size:0.9rem;">Khởi nguồn từ khao khát kiến tạo nên một không gian trải nghiệm ô tô xứng tầm phong cách sống thượng lưu, Showroom của chúng tôi quy tụ những mẫu xe sang đẳng cấp bậc nhất toàn cầu.</p>' +
+            '<p class="text-muted" style="line-height:1.7; font-size:0.9rem;">Với tôn chỉ phục vụ tận tâm đạt tiêu chuẩn 5 sao, chúng tôi mang tới không chỉ là chiếc xe, mà là giải pháp sở hữu độc bản và chế độ hậu mãi trọn đời hoàn hảo dành cho chủ sở hữu danh giá.</p>' +
+          '</div>' +
+        '</div>';
+    }
+    
+    titleEl.innerText = title;
+    bodyEl.innerHTML = bodyHtml;
+    
+    const myModal = new bootstrap.Modal(document.getElementById('megaMenuContentModal'));
+    myModal.show();
+  }
+
+  function triggerDownloadNotification() {
+    // Hide open modals first
+    const contentModalEl = document.getElementById('megaMenuContentModal');
+    if (contentModalEl) {
+      const contentModal = bootstrap.Modal.getInstance(contentModalEl);
+      if (contentModal) contentModal.hide();
+    }
+    
+    // Show success float alert
+    const alertBox = document.getElementById("successAlert");
+    alertBox.querySelector('strong').innerText = "Tải xuống thành công!";
+    alertBox.querySelector('span').innerText = "Tài liệu của bạn đang được tải về thiết bị.";
+    alertBox.classList.add("show");
+    
+    setTimeout(() => {
+      alertBox.classList.remove("show");
+    }, 4000);
+  }
+
+  function triggerMessageNotification() {
+    const contentModalEl = document.getElementById('megaMenuContentModal');
+    if (contentModalEl) {
+      const contentModal = bootstrap.Modal.getInstance(contentModalEl);
+      if (contentModal) contentModal.hide();
+    }
+    
+    const alertBox = document.getElementById("successAlert");
+    alertBox.querySelector('strong').innerText = "Gửi thành công!";
+    alertBox.querySelector('span').innerText = "Chúng tôi đã tiếp nhận và phản hồi sớm nhất.";
+    alertBox.classList.add("show");
+    
+    setTimeout(() => {
+      alertBox.classList.remove("show");
+    }, 4000);
+  }
+
+  // ----------------------------------------------------
+  // MEGA MENU OPERATIONS
+  // ----------------------------------------------------
+  function openMenu(menuId) {
+    closeAllMenus();
+    document.getElementById('megaMenuOverlay').classList.add('open');
+    document.getElementById(menuId).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function openMegaMenu() {
+    openMenu('megaMenuPanel');
+  }
+  function closeAllMenus() {
+    document.getElementById('megaMenuOverlay').classList.remove('open');
+    document.querySelectorAll('.mega-menu-panel').forEach(panel => {
+      panel.classList.remove('open');
+    });
+    document.body.style.overflow = '';
+  }
+  function closeMegaMenu() {
+    closeAllMenus();
+  }
+  
+  // Close with Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeAllMenus();
+  });
+</script>
+</body>
+</html>

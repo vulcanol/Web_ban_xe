@@ -201,7 +201,7 @@ INSERT INTO users (ho_ten, email, mat_khau, so_dien_thoai, vai_tro) VALUES
   ('Nguyễn Văn An',  'an.nguyen@email.com',  '$2b$12$hash1...', '0901234567', 'nguoi_ban'),
   ('Trần Thị Bình',  'binh.tran@email.com',  '$2b$12$hash2...', '0912345678', 'khach_hang'),
   ('Lê Văn Cường',   'cuong.le@email.com',   '$2b$12$hash3...', '0923456789', 'nguoi_ban'),
-  ('Admin System',   'admin@webbánxe.vn',    '$2b$12$hash4...', '1900000000', 'admin');
+  ('Admin System',   'admin',                '$2b$12$hash4...', '1900000000', 'admin');
 
 -- Mẫu xe
 INSERT INTO cars (thuong_hieu_id, loai_xe_id, ten_xe, nam_san_xuat, nhien_lieu, hop_so, so_cho, dong_co, cong_suat) VALUES

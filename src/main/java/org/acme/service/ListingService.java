@@ -29,6 +29,14 @@ public class ListingService {
                 .collect(Collectors.toList());
     }
 
+    public List<Listing> getActiveListingEntities() {
+        return listingRepository.findActiveListings();
+    }
+
+    public long countActiveListings() {
+        return listingRepository.count("status", Listing.ListingStatus.DANG_DANG);
+    }
+
     public List<ListingDTO> getListingsByUser(Long userId) {
         return listingRepository.findByUser(userId).stream()
                 .map(this::convertToDTO)

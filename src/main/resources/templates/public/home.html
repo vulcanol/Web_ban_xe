@@ -1,0 +1,875 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bán Xe Ô Tô - Sang Trọng & Đẳng Cấp</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+    body { background-color: #000; color: #fff; }
+    h1, h2, h3, h4, h5, h6, .serif { font-family: 'Playfair Display', serif; }
+    a { text-decoration: none; }
+    
+    /* Navbar */
+    .navbar { background-color: #000; padding: 1.2rem 2rem; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 1000; }
+    .navbar .nav-link { color: #fff !important; font-size: 0.85rem; font-weight: 500; margin-right: 1.5rem; transition: color 0.3s; }
+    .navbar .nav-link:hover { color: #aaa !important; }
+    .navbar-brand { position: absolute; left: 50%; transform: translateX(-50%); color: #fff; font-size: 1.8rem; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border: 1.5px solid #fff; border-radius: 50%; padding: 0; transition: all 0.3s; }
+    .navbar-brand:hover { color: #aaa; border-color: #aaa; }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-right .icon-link { color: #fff; font-size: 1.2rem; transition: color 0.3s; }
+    .nav-right .icon-link:hover { color: #aaa; }
+    .btn-login-nav { background-color: #222; color: #fff; border: none; border-radius: 20px; padding: 0.5rem 1.2rem; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; transition: background 0.3s; text-decoration: none; }
+    .btn-login-nav:hover { background-color: #444; color: #fff; }
+
+    /* Hero Section */
+    .hero { position: relative; height: 90vh; background: url('https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?q=80&w=2070&auto=format&fit=crop') no-repeat center center; background-size: cover; display: flex; align-items: center; }
+    .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0) 100%); }
+    .hero-content { position: relative; z-index: 2; padding-left: 5rem; max-width: 650px; }
+    .hero-title { font-size: 4.5rem; font-weight: 400; margin-bottom: 1.5rem; line-height: 1.1; }
+    .hero-subtitle { font-size: 1.15rem; font-weight: 300; margin-bottom: 2.5rem; line-height: 1.6; color: #eee; }
+    .btn-primary-custom { background-color: #fff; color: #000; padding: 1rem 2.5rem; font-weight: 600; font-size: 0.95rem; display: inline-block; transition: background 0.3s; }
+    .btn-primary-custom:hover { background-color: #e0e0e0; color: #000; }
+
+    /* Categories Section */
+    .section-categories { background-color: #ebe7e0; color: #000; padding: 6rem 2rem; }
+    .section-categories h2 { font-size: 2.8rem; font-weight: 400; margin-bottom: 3rem; margin-left: 2rem; }
+    .tabs { display: flex; justify-content: center; margin-bottom: 4rem; }
+    .tab { background-color: #fff; color: #000; padding: 1rem 3rem; font-size: 0.85rem; font-weight: 600; border: 1px solid #ddd; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
+    .tab.active { background-color: #000; color: #fff; border-color: #000; }
+    
+    .cat-card { background-color: #000; border: none; border-radius: 0; overflow: hidden; display: flex; flex-direction: column; height: 100%; transition: transform 0.4s; text-decoration: none; color: inherit; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    .cat-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+    .cat-img-wrapper { height: 400px; background-color: #111; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+    .cat-img-wrapper::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 50%; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); }
+    .cat-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+    .cat-img-wrapper i { font-size: 6rem; color: #333; z-index: 1; }
+    .cat-info { background-color: #000; color: #fff; padding: 2.5rem 2rem; flex-grow: 1; display: flex; flex-direction: column; position: relative; z-index: 2; margin-top: -80px; }
+    .cat-info h3 { font-size: 1.8rem; font-weight: 400; margin-bottom: 0.5rem; }
+    .cat-info p { font-size: 0.9rem; font-weight: 300; margin-bottom: 2rem; flex-grow: 1; color: #ccc; }
+    .btn-secondary-custom { background-color: #fff; color: #000; padding: 0.8rem 2rem; font-weight: 600; font-size: 0.85rem; align-self: flex-start; transition: background 0.3s; }
+    .btn-secondary-custom:hover { background-color: #e0e0e0; color: #000; }
+
+    /* Footer */
+    footer { background-color: #000; color: #fff; padding: 5rem 2rem 2rem; border-top: 1px solid #1a1a1a; }
+    .footer-top { display: flex; justify-content: center; margin-bottom: 4rem; }
+    .back-to-top { color: #888; font-size: 0.85rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; cursor: pointer; transition: color 0.3s; }
+    .back-to-top:hover { color: #fff; }
+    .back-to-top i { font-size: 1.2rem; }
+    .footer-links h5 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1.5rem; font-family: 'Inter', sans-serif; }
+    .footer-links ul { list-style: none; padding: 0; }
+    .footer-links li { margin-bottom: 1rem; }
+    .footer-links a { color: #888; font-size: 0.9rem; transition: color 0.3s; }
+    .footer-links a:hover { color: #fff; }
+    .footer-bottom { margin-top: 5rem; padding-top: 2rem; border-top: 1px solid #222; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+    .footer-bottom-links { display: flex; gap: 2rem; font-size: 0.85rem; color: #888; flex-wrap: wrap; }
+    .footer-bottom-links a { color: #888; transition: color 0.3s; }
+    .footer-bottom-links a:hover { color: #fff; }
+    .social-icons { display: flex; gap: 1.5rem; font-size: 1.3rem; }
+    .social-icons a { color: #888; transition: color 0.3s; }
+    .social-icons a:hover { color: #fff; }
+    .footer-logo { font-size: 2rem; color: #fff; border: 1.5px solid #fff; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; }
+
+    /* Login Modal Styles */
+    .custom-modal-right { position: absolute; top: 60px; right: 2rem; margin: 0; width: 400px; max-width: calc(100% - 4rem); }
+    .modal-content { border-radius: 0; border: none; padding: 0.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+    .modal-header { border-bottom: none; padding: 1rem 1.5rem 0.5rem; justify-content: flex-end; }
+    .modal-title { font-size: 2.2rem; margin-bottom: 0.5rem; }
+    .modal-body { padding: 0 2rem 2.5rem; text-align: left; }
+    .modal-body p { font-size: 0.95rem; margin-bottom: 2rem; color: #000; }
+    .btn-black { background-color: #1a1a1a; color: #fff; width: 100%; padding: 1.2rem; font-weight: 600; font-size: 0.95rem; border: none; margin-bottom: 1rem; transition: background 0.3s; border-radius: 0; display: inline-block; text-align: center; }
+    .btn-black:hover { background-color: #000; color: #fff; }
+    .btn-outline-black { background-color: #fff; color: #000; border: 1px solid #ddd; width: 100%; padding: 1.2rem; font-weight: 600; font-size: 0.95rem; transition: border-color 0.3s; border-radius: 0; display: inline-block; text-align: center; }
+    .btn-outline-black:hover { border-color: #999; }
+    .btn-close { font-size: 0.8rem; }
+
+    /* Mega Menu */
+    .mega-menu-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 1100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .mega-menu-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .mega-menu-panel {
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: 450px;
+      max-width: 90vw;
+      background: #fff;
+      color: #000;
+      z-index: 1101;
+      padding: 5rem 3.5rem 3.5rem;
+      transform: translateX(-100%);
+      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      height: 100vh;
+      overflow-y: auto;
+      box-shadow: 10px 0 40px rgba(0,0,0,0.2);
+    }
+    .mega-menu-panel.open {
+      transform: translateX(0);
+    }
+    .mega-menu-close {
+      position: absolute;
+      top: 2rem; right: 2.5rem;
+      background: none; border: none;
+      font-size: 1.6rem; cursor: pointer;
+      color: #111; line-height: 1;
+      padding: 0.3rem 0.5rem;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .mega-menu-close:hover {
+      color: #000;
+      transform: rotate(90deg);
+    }
+    .mega-menu-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 400;
+      margin-bottom: 2.5rem;
+      color: #000;
+      letter-spacing: -0.5px;
+    }
+    .mega-menu-list {
+      list-style: none;
+      padding: 0; margin: 0 0 2rem 0;
+    }
+    .mega-menu-list li { margin-bottom: 1.1rem; }
+    .mega-menu-list a {
+      color: #111;
+      font-size: 1.05rem;
+      font-weight: 400;
+      text-decoration: none;
+      transition: color 0.2s, padding-left: 0.25s;
+      display: inline-block;
+    }
+    .mega-menu-list a:hover {
+      color: #000;
+      padding-left: 6px;
+      text-decoration: none;
+    }
+    .mega-menu-divider {
+      border: none;
+      border-top: 1px solid #e5e5e5;
+      margin: 2rem 0;
+    }
+    .nav-link-mega {
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      color: #fff !important;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-right: 1.5rem;
+      transition: color 0.3s;
+    }
+    .nav-link-mega:hover { color: #aaa !important; }
+    
+    /* Luxury Modal detail styles */
+    .lux-modal-content { background-color: #0f0f0f; border: 1px solid #222; border-radius: 0; color: #fff; padding: 1.5rem; }
+    .lux-modal-header { border-bottom: 1px solid #1f1f1f; padding-bottom: 1rem; }
+    .lux-modal-title { font-size: 2.2rem; font-weight: 400; }
+    .lux-modal-body { padding: 2rem 0; }
+    .lux-spec-box { background: #161616; border: 1px solid #222; padding: 1rem; text-align: center; display: flex; flex-direction: column; gap: 0.2rem; }
+    .lux-spec-label { font-size: 0.7rem; text-transform: uppercase; color: #666; }
+    .lux-spec-value { font-size: 1rem; font-weight: 600; color: #fff; }
+    .lux-desc-txt { font-size: 0.95rem; line-height: 1.7; color: #bbb; margin-bottom: 2rem; font-weight: 300; }
+    .btn-lux-order { background: #fff; color: #000; border: 1px solid #fff; padding: 1rem 3rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; transition: all 0.3s; width: 100%; text-align: center; }
+    .btn-lux-order:hover { background: #ccc; border-color: #ccc; }
+    
+    /* Floating alert */
+    .floating-alert { position: fixed; bottom: 2rem; right: 2rem; background: #fff; color: #000; border: none; border-radius: 0; padding: 1rem 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 2000; display: flex; align-items: center; gap: 0.8rem; transform: translateY(150%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .floating-alert.show { transform: translateY(0); }
+    .floating-alert i { font-size: 1.3rem; color: #2e7d32; }
+    
+    /* Premium Form details modal */
+    .lux-input { background: #161616; border: 1px solid #222; color: #fff; padding: 0.8rem 1rem; border-radius: 0; width: 100%; transition: all 0.3s; }
+    .lux-input:focus { border-color: #fff; outline: none; background: #1a1a1a; }
+    .lux-form-lbl { font-size: 0.8rem; font-weight: 500; color: #888; margin-bottom: 0.4rem; display: block; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* Transitions & Keyframes */
+    .fade-item { animation: fadeEffect 0.5s ease forwards; }
+    @keyframes fadeEffect {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar d-flex justify-content-between align-items-center">
+  <div class="d-none d-lg-flex">
+    <button class="nav-link-mega" id="btn-cac-mau-xe" onclick="openMenu('megaMenuPanel')" type="button">Các mẫu xe</button>
+    <button class="nav-link-mega" id="btn-mua" onclick="openMenu('buyMenuPanel')" type="button">Mua</button>
+    <button class="nav-link-mega" id="btn-dich-vu" onclick="openMenu('serviceMenuPanel')" type="button">Dịch vụ</button>
+    <button class="nav-link-mega" id="btn-thuong-hieu" onclick="openMenu('brandMenuPanel')" type="button">Thương hiệu</button>
+  </div>
+  
+  <a href="/" class="navbar-brand">
+    <i class="bi bi-car-front-fill"></i>
+  </a>
+
+  <div class="nav-right">
+    <a href="#" class="nav-link d-none d-md-block">Provider/...</a>
+    <a href="#" class="icon-link"><i class="bi bi-search"></i></a>
+    <a href="#" class="icon-link"><i class="bi bi-globe"></i></a>
+    
+    {#if session??}
+      <a href="{#if session.role == 'ADMIN'}/admin{#else}/user/home{/if}" class="btn-login-nav">
+        <div style="width: 24px; height: 24px; background: #fff; color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px;">{session.fullName.substring(0,1)}</div>
+        {session.fullName}
+      </a>
+    {#else}
+      <button class="btn-login-nav" data-bs-toggle="modal" data-bs-target="#loginModal">
+        <i class="bi bi-person-fill"></i> Đăng nhập
+      </button>
+    {/if}
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <h1 class="hero-title serif">Đẳng Cấp Vượt Thời Gian</h1>
+    <p class="hero-subtitle">Sự tổng hòa giữa tính thẩm mỹ đương đại và không gian sang trọng bậc nhất. Trải nghiệm kiệt tác di chuyển.</p>
+    <a href="#cac-mau-xe" class="btn-primary-custom">Tìm xe có sẵn</a>
+  </div>
+</section>
+
+<!-- Categories Section -->
+<section class="section-categories" id="cac-mau-xe">
+  <div class="container-fluid px-lg-5">
+    <h2 class="serif">Các mẫu xe nổi bật</h2>
+    
+    <div class="row g-4 justify-content-center">
+      <!-- Xe 1 -->
+      <div class="col-md-6 col-xl-4">
+        <a href="/car-detail?type=sedan" class="cat-card">
+          <div class="cat-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=800&auto=format&fit=crop" alt="Xe hạng sang">
+          </div>
+          <div class="cat-info">
+            <h3 class="serif">Sedan Sang Trọng</h3>
+            <p>Tuyệt tác thiết kế vượt thời gian, mang lại trải nghiệm đỉnh cao.</p>
+            <div class="btn-secondary-custom">Tìm hiểu thêm</div>
+          </div>
+        </a>
+      </div>
+      <!-- Xe 2 -->
+      <div class="col-md-6 col-xl-4">
+        <a href="/car-detail?type=suv" class="cat-card">
+          <div class="cat-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1503376760367-13eea3481f44?q=80&w=800&auto=format&fit=crop" alt="SUV Cao Cấp">
+          </div>
+          <div class="cat-info">
+            <h3 class="serif">SUV Đa Dụng</h3>
+            <p>Khẳng định vị thế, chinh phục mọi địa hình với không gian rộng rãi.</p>
+            <div class="btn-secondary-custom">Tìm hiểu thêm</div>
+          </div>
+        </a>
+      </div>
+      <!-- Xe 3 -->
+      <div class="col-md-6 col-xl-4">
+        <a href="/car-detail?type=sport" class="cat-card">
+          <div class="cat-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?q=80&w=800&auto=format&fit=crop" alt="Xe thể thao">
+          </div>
+          <div class="cat-info">
+            <h3 class="serif">Thể Thao Hiệu Suất</h3>
+            <p>Động cơ mạnh mẽ, cảm giác lái phấn khích trên từng dặm đường.</p>
+            <div class="btn-secondary-custom">Tìm hiểu thêm</div>
+          </div>
+        </a>
+      </div>
+      <!-- Xe 4 -->
+      <div class="col-md-6 col-xl-4">
+        <a href="/car-detail?type=ev" class="cat-card">
+          <div class="cat-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=800&auto=format&fit=crop" alt="Xe điện">
+          </div>
+          <div class="cat-info">
+            <h3 class="serif">Xe Thuần Điện</h3>
+            <p>Công nghệ tương lai, thân thiện với môi trường và vận hành êm ái.</p>
+            <div class="btn-secondary-custom">Tìm hiểu thêm</div>
+          </div>
+        </a>
+      </div>
+      <!-- Xe 5 -->
+      <div class="col-md-6 col-xl-4">
+        <a href="/car-detail?type=coupe" class="cat-card">
+          <div class="cat-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=800&auto=format&fit=crop" alt="Xe gia đình">
+          </div>
+          <div class="cat-info">
+            <h3 class="serif">Coupe Cá Tính</h3>
+            <p>Đường nét mượt mà, phong cách thiết kế độc bản đầy cuốn hút.</p>
+            <div class="btn-secondary-custom">Tìm hiểu thêm</div>
+          </div>
+        </a>
+      </div>
+      <!-- Xe 6 -->
+      <div class="col-md-6 col-xl-4">
+        <a href="/car-detail?type=cabriolet" class="cat-card">
+          <div class="cat-img-wrapper">
+            <img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=800&auto=format&fit=crop" alt="Xe bán tải">
+          </div>
+          <div class="cat-info">
+            <h3 class="serif">Cabriolet Thượng Lưu</h3>
+            <p>Tận hưởng sự tự do trọn vẹn dưới bầu trời rộng mở.</p>
+            <div class="btn-secondary-custom">Tìm hiểu thêm</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container-fluid px-lg-5">
+    <div class="footer-top">
+      <div class="back-to-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">
+        <i class="bi bi-chevron-up"></i>
+        Lên trên
+      </div>
+    </div>
+
+    <div class="row footer-links g-4 justify-content-between">
+      <div class="col-6 col-md-2">
+        <h5>Các dòng xe</h5>
+        <ul>
+          <li><a href="#">Xe thuần điện EQ</a></li>
+          <li><a href="#">Sedan</a></li>
+          <li><a href="#">SUV</a></li>
+          <li><a href="#">Cabriolet và Roadster</a></li>
+          <li><a href="#">Siêu xe Thể thao</a></li>
+          <li><a href="#">Xe hạng sang đặc biệt</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-2">
+        <h5>Mua xe</h5>
+        <ul>
+          <li><a href="#">Ưu đãi mới nhất</a></li>
+          <li><a href="#">Tìm xe mới</a></li>
+          <li><a href="#">Tìm xe đã qua sử dụng</a></li>
+          <li><a href="#">Bảng giá & Brochure</a></li>
+          <li><a href="#">Cấu hình xe</a></li>
+          <li><a href="#">Khối doanh nghiệp & Khách hàng ưu tiên</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-2">
+        <h5>Tư vấn mua xe</h5>
+        <ul>
+          <li><a href="#">Yêu cầu tư vấn</a></li>
+          <li><a href="#">Đăng ký lái thử</a></li>
+          <li><a href="#">Tìm Nhà phân phối gần nhất</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-3">
+        <h5>Dịch vụ</h5>
+        <ul>
+          <li><a href="#">Ưu đãi dịch vụ</a></li>
+          <li><a href="#">Đặt hẹn dịch vụ</a></li>
+          <li><a href="#">Hướng dẫn sử dụng dành cho chủ sở hữu xe</a></li>
+          <li><a href="#">Phụ kiện chính hãng</a></li>
+          <li><a href="#">Bộ sưu tập Mercedes-Benz</a></li>
+          <li><a href="#">Triệu hồi</a></li>
+          <li><a href="#">Video Hướng Dẫn</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-2">
+        <h5>Khám phá</h5>
+        <ul>
+          <li><a href="#">Câu chuyện của chúng tôi</a></li>
+          <li><a href="#">Cơ hội việc làm</a></li>
+          <li><a href="#">Liên hệ</a></li>
+          <li><a href="#">Quyền riêng tư</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom-links">
+        <a href="#">Bản quyền nội dung</a>
+        <a href="#">Cài đặt</a>
+        <a href="#">Quyền riêng tư và bảo vệ dữ liệu</a>
+        <a href="#">Thông tin pháp lý</a>
+        <a href="#">Giấy phép FOSS</a>
+      </div>
+      <div class="d-flex align-items-center gap-4">
+        <div class="social-icons">
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-youtube"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-linkedin"></i></a>
+        </div>
+        <div class="footer-logo">
+          <i class="bi bi-car-front-fill" style="font-size: 1.5rem;"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog custom-modal-right">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h5 class="modal-title serif">Đăng nhập Bán Xe Ô Tô</h5>
+        <p>Đăng nhập tại đây</p>
+        <a href="/auth/login" class="btn btn-black">Đăng nhập</a>
+        <a href="/auth/register" class="btn btn-outline-black">Tạo tài khoản mới</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Mega Menu Dynamic Content Modal -->
+<div class="modal fade" id="megaMenuContentModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content lux-modal-content">
+      <div class="modal-header lux-modal-header border-0 justify-content-between align-items-center">
+        <h4 class="serif mb-0 text-white" id="menuContentTitle" style="letter-spacing: 1px;"></h4>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body py-3" id="menuContentBody">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Consultation Request Modal -->
+<div class="modal fade" id="consultationModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="width: 450px;">
+    <div class="modal-content lux-modal-content">
+      <div class="modal-header lux-modal-header border-0 justify-content-between align-items-center">
+        <h4 class="serif mb-0 text-white" style="letter-spacing: 1px;">YÊU CẦU BÁO GIÁ</h4>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body py-3">
+        <p class="text-muted mb-4" style="font-size: 0.85rem; line-height: 1.5;">Vui lòng điền thông tin để đội ngũ chuyên viên cao cấp của chúng tôi liên hệ tư vấn lộ trình sở hữu xe và các ưu đãi đặc quyền sớm nhất.</p>
+        
+        <form id="consultationForm" onsubmit="submitConsultation(event)">
+          <div class="mb-3">
+            <label class="lux-form-lbl">Mẫu xe quan tâm</label>
+            <input type="text" class="lux-input" id="formCarModel" readonly style="color: #aaa;">
+          </div>
+          <div class="mb-3">
+            <label class="lux-form-lbl">Họ và tên quý khách</label>
+            <input type="text" class="lux-input" id="formCustomerName" placeholder="Ví dụ: Nguyễn Văn A" required>
+          </div>
+          <div class="mb-3">
+            <label class="lux-form-lbl">Số điện thoại liên hệ</label>
+            <input type="tel" class="lux-input" id="formCustomerPhone" placeholder="Ví dụ: 090 123 4567" required>
+          </div>
+          <div class="mb-4">
+            <label class="lux-form-lbl">Khu vực phân phối</label>
+            <select class="lux-input form-select" id="formCustomerRegion" style="appearance: none;">
+              <option value="Hà Nội">Khu vực Miền Bắc (Hà Nội)</option>
+              <option value="Đà Nẵng">Khu vực Miền Trung (Đà Nẵng)</option>
+              <option value="Hồ Chí Minh">Khu vực Miền Nam (TP. Hồ Chí Minh)</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-lux-order py-3">GỬI YÊU CẦU ĐĂNG KÝ KÝ DANH</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Floating Success Alert -->
+<div class="floating-alert" id="successAlert">
+  <i class="bi bi-check-circle-fill"></i>
+  <div>
+    <strong class="d-block text-black" style="font-size: 0.9rem;">Gửi thành công!</strong>
+    <span class="text-muted" style="font-size: 0.8rem;">Chuyên viên sẽ liên hệ trong ít phút.</span>
+  </div>
+</div>
+
+<!-- Mega Menu -->
+<div class="mega-menu-overlay" id="megaMenuOverlay" onclick="closeAllMenus()"></div>
+<div class="mega-menu-panel" id="megaMenuPanel" role="dialog" aria-modal="true" aria-label="Các mẫu xe">
+  <button class="mega-menu-close" onclick="closeAllMenus()" aria-label="Đóng">&#10005;</button>
+  <h2 class="mega-menu-title">Các mẫu xe</h2>
+  <ul class="mega-menu-list">
+    <li><a href="/cars" onclick="closeAllMenus()">Tất cả các dòng xe</a></li>
+    <li><a href="/cars?filter=new" onclick="closeAllMenus()">Các mẫu mới</a></li>
+    <li><a href="/cars?type=ev" onclick="closeAllMenus()">Mẫu xe điện</a></li>
+    <li><a href="/cars?type=hybrid" onclick="closeAllMenus()">Mẫu xe hybrid cắm sạc</a></li>
+  </ul>
+  <hr class="mega-menu-divider">
+  <ul class="mega-menu-list">
+    {#for cat in categories}
+    <li><a href="/cars?type={cat.name}" onclick="closeAllMenus()">{cat.name}</a></li>
+    {/for}
+  </ul>
+</div>
+
+<!-- Mua Menu -->
+<div class="mega-menu-panel" id="buyMenuPanel" role="dialog" aria-modal="true" aria-label="Mua">
+  <button class="mega-menu-close" onclick="closeAllMenus()" aria-label="Đóng">&#10005;</button>
+  <h2 class="mega-menu-title">Mua</h2>
+  <ul class="mega-menu-list">
+    <li><a href="/cars" onclick="closeAllMenus()">Xe mới</a></li>
+  </ul>
+  <hr class="mega-menu-divider">
+  <ul class="mega-menu-list">
+    <li><a href="/cars" onclick="closeAllMenus()">Ưu đãi mới nhất</a></li>
+    <li><a href="#" onclick="showMenuContent('doanh-nghiep')">Khối doanh nghiệp & khách hàng ưu tiên</a></li>
+    <li><a href="/cars" onclick="closeAllMenus()">Xe đã qua sử dụng</a></li>
+    <li><a href="#" onclick="showMenuContent('brochure')">Bảng giá & Brochure</a></li>
+  </ul>
+  <hr class="mega-menu-divider">
+  <ul class="mega-menu-list">
+    <li><a href="/cars" onclick="closeAllMenus()">Cấu hình xe</a></li>
+    <li><a href="#" onclick="openConsultationForm('Đăng ký lái thử dòng xe cao cấp')">Đặt lịch lái thử</a></li>
+  </ul>
+  <hr class="mega-menu-divider">
+  <ul class="mega-menu-list">
+    <li><a href="#" onclick="showMenuContent('phu-kien')">Phụ kiện kỹ thuật & bộ sưu tập</a></li>
+  </ul>
+</div>
+
+<!-- Dịch vụ Menu -->
+<div class="mega-menu-panel" id="serviceMenuPanel" role="dialog" aria-modal="true" aria-label="Dịch vụ">
+  <button class="mega-menu-close" onclick="closeAllMenus()" aria-label="Đóng">&#10005;</button>
+  <h2 class="mega-menu-title">Dịch vụ</h2>
+  <ul class="mega-menu-list">
+    <li><a href="#" onclick="showMenuContent('uu-dai-dich-vu')">Ưu đãi Dịch vụ khách hàng</a></li>
+  </ul>
+  <hr class="mega-menu-divider">
+  <ul class="mega-menu-list">
+    <li><a href="#" onclick="openConsultationForm('Đặt lịch hẹn bảo dưỡng & dịch vụ định kỳ')">Đặt lịch hẹn dịch vụ</a></li>
+    <li><a href="#" onclick="showMenuContent('sua-chua')">Dịch vụ & Sửa chữa</a></li>
+    <li><a href="#" onclick="showMenuContent('cuu-ho')">Dịch vụ hỗ trợ & cứu hộ</a></li>
+    <li><a href="#" onclick="openConsultationForm('Đăng ký tư vấn Bảo hiểm Xe cao cấp')">Bảo hiểm</a></li>
+  </ul>
+  <hr class="mega-menu-divider">
+  <ul class="mega-menu-list">
+    <li><a href="#" onclick="showMenuContent('huong-dan-su-dung')">Hướng dẫn sử dụng dành cho chủ sở hữu xe</a></li>
+    <li><a href="#" onclick="showMenuContent('lien-he')">Liên hệ & Chăm sóc khách hàng</a></li>
+  </ul>
+</div>
+
+<!-- Thương hiệu Menu -->
+<div class="mega-menu-panel" id="brandMenuPanel" role="dialog" aria-modal="true" aria-label="Thương hiệu">
+  <button class="mega-menu-close" onclick="closeAllMenus()" aria-label="Đóng">&#10005;</button>
+  <h2 class="mega-menu-title">Thương hiệu</h2>
+  <ul class="mega-menu-list">
+    <li><a href="#" onclick="showMenuContent('gioi-thieu')">Về showroom của chúng tôi</a></li>
+    <li><a href="/cars?type=ev" onclick="closeAllMenus()">Xe chạy điện</a></li>
+  </ul>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function openConsultationForm(carTitle = "") {
+    closeAllMenus();
+    
+    const title = carTitle || "Tư vấn dòng xe cao cấp";
+    document.getElementById("formCarModel").value = title;
+    
+    // Open Consultation Modal
+    const consultModal = new bootstrap.Modal(document.getElementById('consultationModal'));
+    consultModal.show();
+  }
+
+  function submitConsultation(event) {
+    event.preventDefault();
+    
+    // Get values
+    const carModel = document.getElementById("formCarModel").value;
+    const clientName = document.getElementById("formCustomerName").value;
+    const clientPhone = document.getElementById("formCustomerPhone").value;
+    const clientRegion = document.getElementById("formCustomerRegion").value;
+    
+    // Close Modal
+    const consultModalEl = document.getElementById('consultationModal');
+    const consultModal = bootstrap.Modal.getInstance(consultModalEl);
+    if (consultModal) {
+      consultModal.hide();
+    }
+    
+    // Show success float alert
+    const alertBox = document.getElementById("successAlert");
+    alertBox.querySelector('strong').innerText = "Gửi thành công!";
+    alertBox.querySelector('span').innerText = "Chuyên viên sẽ liên hệ trong ít phút.";
+    alertBox.classList.add("show");
+    
+    // Reset Form
+    document.getElementById("consultationForm").reset();
+    
+    // Hide alert after 4 seconds
+    setTimeout(() => {
+      alertBox.classList.remove("show");
+    }, 4000);
+  }
+
+  function showMenuContent(type) {
+    closeAllMenus();
+    const titleEl = document.getElementById("menuContentTitle");
+    const bodyEl = document.getElementById("menuContentBody");
+    
+    let title = "";
+    let bodyHtml = "";
+    
+    if (type === 'doanh-nghiep') {
+      title = "Khối Doanh Nghiệp & Khách Hàng Ưu Tiên";
+      bodyHtml = 
+        '<div class="p-3 text-center">' +
+          '<i class="bi bi-award-fill text-warning mb-3" style="font-size: 3.5rem;"></i>' +
+          '<p class="text-muted mb-4">Chương trình đặc quyền dành riêng cho Hội viên Cao cấp & Đối tác Doanh nghiệp Chiến lược.</p>' +
+        '</div>' +
+        '<div class="table-responsive">' +
+          '<table class="table table-dark table-striped border border-dark align-middle text-center">' +
+            '<thead>' +
+              '<tr><th>Cấp bậc</th><th>Chiết khấu tối đa</th><th>Hỗ trợ tài chính</th><th>Bảo dưỡng đặc quyền</th></tr>' +
+            '</thead>' +
+            '<tbody>' +
+              '<tr><td>Silver</td><td>1.5%</td><td>Lãi suất ưu đãi</td><td>1 năm miễn phí</td></tr>' +
+              '<tr><td>Gold</td><td>3.0%</td><td>Hỗ trợ 50% trước bạ</td><td>2 năm miễn phí</td></tr>' +
+              '<tr><td class="text-warning fw-bold">Diamond Platinum</td><td class="text-warning fw-bold">5.0%</td><td>Lãi suất 0% 12 tháng</td><td>Trọn đời VIP Care</td></tr>' +
+            '</tbody>' +
+          '</table>' +
+        '</div>' +
+        '<button class="btn btn-lux-order mt-4 py-3" onclick="openConsultationForm(\'Tư vấn VIP Corporate Partner\')">ĐĂNG KÝ HỘI VIÊN DOANH NGHIỆP</button>';
+    } else if (type === 'brochure') {
+      title = "Bảng Giá & Brochure Tài Liệu";
+      bodyHtml = 
+        '<p class="text-muted mb-4">Tải trực tiếp cẩm nang kỹ thuật số và bảng giá chính hãng mới nhất của Showroom chúng tôi.</p>' +
+        '<div class="d-flex flex-column gap-3">' +
+          '<div class="p-3 border border-dark d-flex justify-content-between align-items-center bg-black">' +
+            '<div>' +
+              '<h6 class="text-white mb-1"><i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i>Brochure Dòng Xe Sedan & Coupe Hạng Sang</h6>' +
+              '<span class="text-muted" style="font-size:0.75rem;">Định dạng PDF (12.4 MB) • Cập nhật 2026</span>' +
+            '</div>' +
+            '<button class="btn btn-outline-light btn-sm px-3" style="border-radius:0;" onclick="triggerDownloadNotification()">Tải xuống</button>' +
+          '</div>' +
+          '<div class="p-3 border border-dark d-flex justify-content-between align-items-center bg-black">' +
+            '<div>' +
+              '<h6 class="text-white mb-1"><i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i>Brochure Dòng Xe SUV & Siêu Xe Thể Thao</h6>' +
+              '<span class="text-muted" style="font-size:0.75rem;">Định dạng PDF (18.1 MB) • Cập nhật 2026</span>' +
+            '</div>' +
+            '<button class="btn btn-outline-light btn-sm px-3" style="border-radius:0;" onclick="triggerDownloadNotification()">Tải xuống</button>' +
+          '</div>' +
+          '<div class="p-3 border border-dark d-flex justify-content-between align-items-center bg-black">' +
+            '<div>' +
+              '<h6 class="text-white mb-1"><i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i>Bảng Giá Tổng Hợp Xe Showroom</h6>' +
+              '<span class="text-muted" style="font-size:0.75rem;">Định dạng PDF (4.2 MB) • Hiệu lực từ 01/2026</span>' +
+            '</div>' +
+            '<button class="btn btn-outline-light btn-sm px-3" style="border-radius:0;" onclick="triggerDownloadNotification()">Tải xuống</button>' +
+          '</div>' +
+        '</div>';
+    } else if (type === 'phu-kien') {
+      title = "Phụ Kiện Chính Hãng & Bộ Sưu Tập Thời Trang";
+      bodyHtml = 
+        '<p class="text-muted mb-4">Các phụ phẩm cao cấp nâng tầm phong cách sống đẳng cấp thượng lưu cùng chiếc xe của bạn.</p>' +
+        '<div class="row g-3">' +
+          '<div class="col-sm-6 col-md-4">' +
+            '<div class="border border-dark bg-black p-2 text-center h-100">' +
+              '<img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=300&auto=format&fit=crop" class="img-fluid mb-2" style="height:120px; object-fit:cover; width:100%;" alt="Đồng hồ">' +
+              '<h6 class="text-white mb-1" style="font-size:0.85rem;">Đồng Hồ Chronograph VIP</h6>' +
+              '<span class="text-warning fw-semibold d-block" style="font-size:0.8rem;">18.500.000 đ</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="col-sm-6 col-md-4">' +
+            '<div class="border border-dark bg-black p-2 text-center h-100">' +
+              '<img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?q=80&w=300&auto=format&fit=crop" class="img-fluid mb-2" style="height:120px; object-fit:cover; width:100%;" alt="Vali">' +
+              '<h6 class="text-white mb-1" style="font-size:0.85rem;">Vali Sợi Carbon Cruiser</h6>' +
+              '<span class="text-warning fw-semibold d-block" style="font-size:0.8rem;">12.000.000 đ</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="col-sm-6 col-md-4">' +
+            '<div class="border border-dark bg-black p-2 text-center h-100">' +
+              '<img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?q=80&w=300&auto=format&fit=crop" class="img-fluid mb-2" style="height:120px; object-fit:cover; width:100%;" alt="Bao da">' +
+              '<h6 class="text-white mb-1" style="font-size:0.85rem;">Bao Da Khóa Cá Sấu Pháp</h6>' +
+              '<span class="text-warning fw-semibold d-block" style="font-size:0.8rem;">1.800.000 đ</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<button class="btn btn-lux-order mt-4 py-3" onclick="openConsultationForm(\'Tư vấn mua phụ kiện cao cấp\')">ĐĂNG KÝ MUA SẮM PHỤ KIỆN</button>';
+    } else if (type === 'uu-dai-dich-vu') {
+      title = "Ưu Đãi Dịch Vụ Khách Hàng";
+      bodyHtml = 
+        '<p class="text-muted mb-4">Các chương trình ưu đãi đặc quyền bảo dưỡng xe chính hãng áp dụng tại toàn bộ hệ thống đại lý.</p>' +
+        '<div class="d-flex flex-column gap-3">' +
+          '<div class="p-3 border border-warning bg-black">' +
+            '<span class="badge bg-warning text-black mb-2" style="font-size:0.65rem; font-weight:700;">ĐẶC QUYỀN MỚI</span>' +
+            '<h6 class="text-white mb-1">Miễn Phí Bảo Dưỡng 1.000 KM Đầu Tiên</h6>' +
+            '<p class="text-muted mb-0" style="font-size:0.8rem;">Áp dụng cho tất cả khách hàng bàn giao xe mới trong năm 2026.</p>' +
+          '</div>' +
+          '<div class="p-3 border border-dark bg-black">' +
+            '<h6 class="text-white mb-1">Ưu Đãi 20% Dịch Vụ Đánh Bóng & Phủ Ceramic</h6>' +
+            '<p class="text-muted mb-0" style="font-size:0.8rem;">Chăm sóc vẻ ngoài hoàn mỹ cho xế yêu trước các dịp lễ lớn.</p>' +
+          '</div>' +
+          '<div class="p-3 border border-dark bg-black">' +
+            '<h6 class="text-white mb-1">Miễn Phí Kiểm Tra Tổng Thể Xe 24 Hạng Mục</h6>' +
+            '<p class="text-muted mb-0" style="font-size:0.8rem;">Đảm bảo vận hành bền bỉ tuyệt đối trên các chuyến hành trình xa.</p>' +
+          '</div>' +
+        '</div>' +
+        '<button class="btn btn-lux-order mt-4 py-3" onclick="openConsultationForm(\'Đăng ký nhận ưu đãi dịch vụ\')">NHẬN ƯU ĐÃI NGAY</button>';
+    } else if (type === 'sua-chua') {
+      title = "Quy Trình Dịch Vụ & Sửa Chữa Đạt Chuẩn 5 Sao";
+      bodyHtml = 
+        '<div class="row align-items-center g-3">' +
+          '<div class="col-md-6">' +
+            '<p class="text-muted" style="font-size:0.9rem; line-height:1.6;">Chúng tôi tự hào sở hữu trung tâm dịch vụ kỹ thuật được trang bị trang thiết bị chẩn đoán điện tử tối tân, hệ thống phòng sơn sấy thế hệ mới và kho phụ tùng chính hãng nhập khẩu 100%.</p>' +
+            '<p class="text-muted" style="font-size:0.9rem; line-height:1.6;">Đội ngũ kỹ sư tay nghề cao được đào tạo bài bản theo chứng chỉ quốc tế cam kết chăm sóc chiếc xe của bạn hoàn hảo từng chi tiết nhỏ nhất.</p>' +
+          '</div>' +
+          '<div class="col-md-6">' +
+            '<img src="https://images.unsplash.com/photo-1486006920555-c77dce18193b?q=80&w=400&auto=format&fit=crop" class="img-fluid border border-dark" style="height:200px; object-fit:cover; width:100%;" alt="Kỹ thuật viên">' +
+          '</div>' +
+        '</div>' +
+        '<button class="btn btn-lux-order mt-4 py-3" onclick="openConsultationForm(\'Đặt lịch dịch vụ & sửa chữa\')">ĐĂNG KÝ LỊCH SỬA CHỮA CHUYÊN NGHIỆP</button>';
+    } else if (type === 'cuu-ho') {
+      title = "Hỗ Trợ Khẩn Cấp & Cứu Hộ 24/7";
+      bodyHtml = 
+        '<div class="p-4 border border-danger text-center bg-black mb-4">' +
+          '<i class="bi bi-telephone-fill text-danger mb-2 d-block" style="font-size: 2rem;"></i>' +
+          '<h5 class="text-white mb-2" style="letter-spacing:1px;">HOTLINE SƠ CỨU NỔI KHẨN CẤP</h5>' +
+          '<h2 class="text-danger fw-bold mb-3">1900 8888 (Phím 9)</h2>' +
+          '<p class="text-muted mb-0" style="font-size:0.85rem;">Hoạt động liên tục 24 giờ mỗi ngày, 7 ngày một tuần kể cả ngày Lễ & Tết.</p>' +
+        '</div>' +
+        '<div class="d-flex flex-column gap-3 text-muted" style="font-size:0.85rem; line-height:1.5;">' +
+          '<div class="d-flex align-items-start gap-2"><i class="bi bi-shield-check text-success"></i><span>Đội ngũ cứu hộ có mặt tại hiện trường trong 30-45 phút.</span></div>' +
+          '<div class="d-flex align-items-start gap-2"><i class="bi bi-shield-check text-success"></i><span>Hỗ trợ kéo xe về trung tâm dịch vụ ủy quyền gần nhất.</span></div>' +
+          '<div class="d-flex align-items-start gap-2"><i class="bi bi-shield-check text-success"></i><span>Hỗ trợ kỹ thuật tại chỗ cho các lỗi nhỏ (kích bình, vá vỏ).</span></div>' +
+        '</div>';
+    } else if (type === 'huong-dan-su-dung') {
+      title = "Cẩm Nang & Hướng Dẫn Sử Dụng Điện Tử";
+      bodyHtml = 
+        '<p class="text-muted mb-4">Tra cứu nhanh hướng dẫn vận hành kỹ thuật số cho chiếc xe sang của bạn để tận hưởng trọn vẹn tiện ích công nghệ.</p>' +
+        '<div class="d-flex flex-column gap-3">' +
+          '<div class="p-3 border border-dark bg-black d-flex justify-content-between align-items-center">' +
+            '<div>' +
+              '<h6 class="text-white mb-0"><i class="bi bi-book-half text-info me-2"></i>Hướng Dẫn Vận Hành Xe Điện EQ Hạng Sang</h6>' +
+              '<span class="text-muted" style="font-size:0.75rem;">Ấn bản Tiếng Việt • 248 trang (PDF)</span>' +
+            '</div>' +
+            '<button class="btn btn-outline-light btn-sm" style="border-radius:0;" onclick="triggerDownloadNotification()">Xem ngay</button>' +
+          '</div>' +
+          '<div class="p-3 border border-dark bg-black d-flex justify-content-between align-items-center">' +
+            '<div>' +
+              '<h6 class="text-white mb-0"><i class="bi bi-book-half text-info me-2"></i>Cẩm Nang Sử Dụng Màn Hình Hyperscreen & MBUX</h6>' +
+              '<span class="text-muted" style="font-size:0.75rem;">Ấn bản Tiếng Việt • 115 trang (PDF)</span>' +
+            '</div>' +
+            '<button class="btn btn-outline-light btn-sm" style="border-radius:0;" onclick="triggerDownloadNotification()">Xem ngay</button>' +
+          '</div>' +
+        '</div>';
+    } else if (type === 'lien-he') {
+      title = "Liên Hệ & Chăm Sóc Khách Hàng";
+      bodyHtml = 
+        '<div class="row g-4">' +
+          '<div class="col-md-6">' +
+            '<h6 class="text-white mb-3" style="letter-spacing:1px;">THÔNG TIN ĐẠI LÝ</h6>' +
+            '<p class="text-muted mb-2"><i class="bi bi-geo-alt-fill text-white me-2"></i><strong>Địa chỉ:</strong> Số 123 Đại Lộ Ánh Sáng, Quận 1, TP. Hồ Chí Minh</p>' +
+            '<p class="text-muted mb-2"><i class="bi bi-envelope-fill text-white me-2"></i><strong>Email:</strong> contact@premiumshowroom.com</p>' +
+            '<p class="text-muted mb-4"><i class="bi bi-clock-fill text-white me-2"></i><strong>Giờ mở cửa:</strong> 08:00 - 20:00 (Tất cả các ngày trong tuần)</p>' +
+          '</div>' +
+          '<div class="col-md-6">' +
+            '<h6 class="text-white mb-3" style="letter-spacing:1px;">GỬI YÊU CẦU CHO BAN QUẢN TRỊ</h6>' +
+            '<form onsubmit="event.preventDefault(); triggerMessageNotification();">' +
+              '<input type="text" class="lux-input mb-2" placeholder="Họ và tên của bạn" required>' +
+              '<input type="email" class="lux-input mb-2" placeholder="Email liên hệ" required>' +
+              '<textarea class="lux-input mb-3" placeholder="Lời nhắn của bạn gửi đến chúng tôi..." rows="3" required></textarea>' +
+              '<button type="submit" class="btn btn-lux-order py-2 btn-sm">GỬI LỜI NHẮN</button>' +
+            '</form>' +
+          '</div>' +
+        '</div>';
+    } else if (type === 'gioi-thieu') {
+      title = "Về Showroom Cao Cấp Của Chúng Tôi";
+      bodyHtml = 
+        '<div class="row align-items-center g-4">' +
+          '<div class="col-md-5">' +
+            '<img src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=400&auto=format&fit=crop" class="img-fluid border border-dark" style="height:250px; object-fit:cover; width:100%;" alt="Showroom">' +
+          '</div>' +
+          '<div class="col-md-7">' +
+            '<h5 class="serif text-white mb-3">Tôn vinh nghệ thuật di chuyển sang trọng</h5>' +
+            '<p class="text-muted" style="line-height:1.7; font-size:0.9rem;">Khởi nguồn từ khao khát kiến tạo nên một không gian trải nghiệm ô tô xứng tầm phong cách sống thượng lưu, Showroom của chúng tôi quy tụ những mẫu xe sang đẳng cấp bậc nhất toàn cầu.</p>' +
+            '<p class="text-muted" style="line-height:1.7; font-size:0.9rem;">Với tôn chỉ phục vụ tận tâm đạt tiêu chuẩn 5 sao, chúng tôi mang tới không chỉ là chiếc xe, mà là giải pháp sở hữu độc bản và chế độ hậu mãi trọn đời hoàn hảo dành cho chủ sở hữu danh giá.</p>' +
+          '</div>' +
+        '</div>';
+    }
+    
+    titleEl.innerText = title;
+    bodyEl.innerHTML = bodyHtml;
+    
+    const myModal = new bootstrap.Modal(document.getElementById('megaMenuContentModal'));
+    myModal.show();
+  }
+
+  function triggerDownloadNotification() {
+    const contentModalEl = document.getElementById('megaMenuContentModal');
+    if (contentModalEl) {
+      const contentModal = bootstrap.Modal.getInstance(contentModalEl);
+      if (contentModal) contentModal.hide();
+    }
+    
+    const alertBox = document.getElementById("successAlert");
+    alertBox.querySelector('strong').innerText = "Tải xuống thành công!";
+    alertBox.querySelector('span').innerText = "Tài liệu của bạn đang được tải về thiết bị.";
+    alertBox.classList.add("show");
+    
+    setTimeout(() => {
+      alertBox.classList.remove("show");
+    }, 4000);
+  }
+
+  function triggerMessageNotification() {
+    const contentModalEl = document.getElementById('megaMenuContentModal');
+    if (contentModalEl) {
+      const contentModal = bootstrap.Modal.getInstance(contentModalEl);
+      if (contentModal) contentModal.hide();
+    }
+    
+    const alertBox = document.getElementById("successAlert");
+    alertBox.querySelector('strong').innerText = "Gửi thành công!";
+    alertBox.querySelector('span').innerText = "Chúng tôi đã tiếp nhận và phản hồi sớm nhất.";
+    alertBox.classList.add("show");
+    
+    setTimeout(() => {
+      alertBox.classList.remove("show");
+    }, 4000);
+  }
+
+  function openMenu(menuId) {
+    closeAllMenus();
+    document.getElementById('megaMenuOverlay').classList.add('open');
+    document.getElementById(menuId).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function openMegaMenu() {
+    openMenu('megaMenuPanel');
+  }
+  function closeAllMenus() {
+    document.getElementById('megaMenuOverlay').classList.remove('open');
+    document.querySelectorAll('.mega-menu-panel').forEach(panel => {
+      panel.classList.remove('open');
+    });
+    document.body.style.overflow = '';
+  }
+  function closeMegaMenu() {
+    closeAllMenus();
+  }
+  // Đóng bằng phím Escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeAllMenus();
+  });
+</script>
+</body>
+</html>

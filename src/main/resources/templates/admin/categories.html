@@ -1,0 +1,109 @@
+{#include admin/base.html session=session activePage="categories"}
+
+{#pageTitle}Quản Lý Danh Mục{/pageTitle}
+
+{#body}
+<style>
+  .page-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; }
+  .page-header h2 { font-size:1.25rem; font-weight:700; color:#0f172a; margin:0; }
+  .btn-add {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white; border: none; padding: 0.6rem 1.2rem;
+    border-radius: 10px; font-weight: 600; font-size: 0.875rem;
+    text-decoration: none; display:inline-flex; align-items:center; gap:0.5rem;
+    transition: all 0.2s;
+  }
+  .btn-add:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(99,102,241,0.3); color:white; }
+  .table-card { background:white; border-radius:16px; border:1px solid #f1f5f9; overflow:hidden; }
+  table { width:100%; border-collapse:collapse; }
+  thead tr { background:#f8fafc; }
+  th { padding:0.875rem 1.25rem; font-size:0.75rem; font-weight:600;
+       color:#64748b; text-transform:uppercase; letter-spacing:0.5px; text-align:left; }
+  td { padding:1rem 1.25rem; border-top:1px solid #f1f5f9; vertical-align:middle; }
+  tr:hover td { background:#fafafa; }
+  .cat-icon { width:40px; height:40px; border-radius:10px;
+              object-fit:cover; background:#f1f5f9; }
+  .icon-placeholder { width:40px; height:40px; border-radius:10px;
+                      background:linear-gradient(135deg,#e2e8f0,#cbd5e1);
+                      display:flex; align-items:center; justify-content:center;
+                      color:#94a3b8; font-size:1.1rem; }
+  .cat-name { font-weight:600; color:#0f172a; font-size:0.9rem; }
+  .cat-desc { color:#94a3b8; font-size:0.8rem; margin-top:0.15rem;
+              max-width:300px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .action-btn {
+    padding:0.35rem 0.75rem; border-radius:8px; border:none;
+    font-size:0.78rem; font-weight:500; cursor:pointer;
+    text-decoration:none; display:inline-flex; align-items:center; gap:0.35rem;
+    transition: all 0.15s;
+  }
+  .btn-edit { background:#eff6ff; color:#3b82f6; }
+  .btn-edit:hover { background:#dbeafe; }
+  .btn-delete { background:#fef2f2; color:#ef4444; }
+  .btn-delete:hover { background:#fee2e2; }
+  .empty-state { text-align:center; padding:4rem 2rem; }
+  .empty-state i { font-size:3rem; color:#e2e8f0; display:block; margin-bottom:1rem; }
+  .empty-state p { color:#94a3b8; font-size:0.9rem; }
+</style>
+
+<div class="page-header">
+  <h2><i class="bi bi-grid-3x3-gap me-2" style="color:#6366f1"></i>Danh Mục Xe</h2>
+  <a href="/admin/categories/new" class="btn-add">
+    <i class="bi bi-plus-lg"></i> Thêm Danh Mục
+  </a>
+</div>
+
+<div class="table-card">
+  {#if categories.isEmpty}
+  <div class="empty-state">
+    <i class="bi bi-inbox"></i>
+    <p>Chưa có danh mục nào.<br>Hãy tạo danh mục đầu tiên!</p>
+    <a href="/admin/categories/new" class="btn-add" style="display:inline-flex;margin-top:1rem;">
+      <i class="bi bi-plus-lg"></i> Tạo Ngay
+    </a>
+  </div>
+  {#else}
+  <table>
+    <thead>
+      <tr>
+        <th>Danh Mục</th>
+        <th>Mô Tả</th>
+        <th style="text-align:center">Thao Tác</th>
+      </tr>
+    </thead>
+    <tbody>
+      {#for category in categories}
+      <tr>
+        <td>
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            {#if category.iconUrl}
+            <img src="{category.iconUrl}" class="cat-icon" alt="" />
+            {#else}
+            <div class="icon-placeholder"><i class="bi bi-image"></i></div>
+            {/if}
+            <div class="cat-name">{category.name}</div>
+          </div>
+        </td>
+        <td>
+          <div class="cat-desc">{#if category.description}{category.description}{#else}<span style="color:#e2e8f0">—</span>{/if}</div>
+        </td>
+        <td style="text-align:center;">
+          <div style="display:flex; gap:0.5rem; justify-content:center;">
+            <a href="/admin/categories/{category.id}/edit" class="action-btn btn-edit">
+              <i class="bi bi-pencil"></i> Sửa
+            </a>
+            <a href="/admin/categories/{category.id}/delete"
+               class="action-btn btn-delete"
+               onclick="return confirm('Xóa danh mục này?')">
+              <i class="bi bi-trash"></i> Xóa
+            </a>
+          </div>
+        </td>
+      </tr>
+      {/for}
+    </tbody>
+  </table>
+  {/if}
+</div>
+{/body}
+
+{/include}
