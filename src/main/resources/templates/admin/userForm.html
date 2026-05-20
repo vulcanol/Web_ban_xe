@@ -1,0 +1,425 @@
+{#include admin/base.html session=session activePage="users"}
+{@org.acme.dto.UserDTO user}
+{@java.lang.String error}
+{@boolean isEdit}
+
+{#pageTitle}{#if isEdit}Chỉnh Sửa Người Dùng{#else}Thêm Người Dùng Mới{/if}{/pageTitle}
+
+{#body}
+<style>
+  .form-card {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #f1f5f9;
+    padding: 2rem;
+    max-width: 760px;
+  }
+  .form-section-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .form-group { margin-bottom: 1.25rem; }
+  label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.4rem;
+  }
+  label .required { color: #ef4444; margin-left: 2px; }
+  .form-control, .form-select {
+    width: 100%;
+    padding: 0.65rem 0.9rem;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    color: #0f172a;
+    background: #f8fafc;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  .form-control:focus, .form-select:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+    background: white;
+  }
+  .form-hint {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    margin-top: 0.3rem;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+
+  /* Toggle switch */
+  .toggle-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .toggle-switch {
+    position: relative;
+    width: 44px; height: 24px;
+    flex-shrink: 0;
+  }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider {
+    position: absolute; inset: 0;
+    background: #cbd5e1;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: 0.25s;
+  }
+  .toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 18px; height: 18px;
+    left: 3px; bottom: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.25s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .toggle-switch input:checked + .toggle-slider { background: #6366f1; }
+  .toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
+  .toggle-label { font-size: 0.875rem; color: #374151; font-weight: 500; }
+
+  /* Role badge */
+  .role-badge {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+  .badge-admin { background: #ede9fe; color: #7c3aed; }
+  .badge-seller { background: #fef3c7; color: #d97706; }
+  .badge-customer { background: #e0f2fe; color: #0369a1; }
+
+  /* Alert */
+  .alert-error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Actions */
+  .form-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f1f5f9;
+  }
+  .btn-save {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    border: none;
+    padding: 0.65rem 1.75rem;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .btn-save:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(99,102,241,0.35); }
+  .btn-cancel {
+    background: #f1f5f9;
+    color: #64748b;
+    border: none;
+    padding: 0.65rem 1.25rem;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+  }
+  .btn-cancel:hover { background: #e2e8f0; color: #475569; }
+
+  /* Page header */
+  .page-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .page-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+  }
+  .back-link {
+    color: #6366f1;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 8px;
+    background: #eef2ff;
+    transition: all 0.15s;
+  }
+  .back-link:hover { background: #e0e7ff; }
+  .avatar-preview {
+    width: 64px; height: 64px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 2px solid #e2e8f0;
+    display: none;
+    margin-top: 0.5rem;
+  }
+  .avatar-initials {
+    width: 64px; height: 64px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 1.25rem;
+    margin-top: 0.5rem;
+  }
+</style>
+
+<div class="page-header">
+  <a href="/admin/users" class="back-link">
+    <i class="bi bi-arrow-left"></i> Danh sách
+  </a>
+  <h2>
+    {#if isEdit}
+      <i class="bi bi-pencil-square me-2" style="color:#6366f1"></i>Chỉnh Sửa Người Dùng
+    {#else}
+      <i class="bi bi-person-plus me-2" style="color:#6366f1"></i>Thêm Người Dùng Mới
+    {/if}
+  </h2>
+</div>
+
+<div class="form-card">
+
+  {#if error??}
+  <div class="alert-error">
+    <i class="bi bi-exclamation-circle-fill"></i>
+    {error}
+  </div>
+  {/if}
+
+  <form method="post"
+    action="{#if isEdit}/admin/users/{user.id}/update{#else}/admin/users/create{/if}">
+
+    <!-- ── THÔNG TIN CƠ BẢN ── -->
+    <div class="form-section-title">Thông Tin Cơ Bản</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="fullName">Họ và Tên <span class="required">*</span></label>
+        <input type="text" id="fullName" name="fullName" class="form-control"
+               placeholder="Nguyễn Văn An"
+               value="{#if user.fullName??}{user.fullName}{/if}"
+               required maxlength="100" />
+      </div>
+      <div class="form-group">
+        <label for="email">Email <span class="required">*</span></label>
+        <input type="email" id="email" name="email" class="form-control"
+               placeholder="example@email.com"
+               value="{#if user.email??}{user.email}{/if}"
+               required maxlength="150" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="password">
+          Mật Khẩu {#if isEdit}<span style="color:#94a3b8;font-weight:400">(để trống = không đổi)</span>{#else}<span class="required">*</span>{/if}
+        </label>
+        <div style="position:relative">
+          <input type="password" id="password" name="password" class="form-control"
+                 placeholder="{#if isEdit}Nhập mật khẩu mới nếu muốn đổi{#else}Tối thiểu 6 ký tự{/if}"
+                 {#if !isEdit}required minlength="6"{/if}
+                 style="padding-right:2.5rem" />
+          <i class="bi bi-eye-slash"
+             style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:#94a3b8;"
+             onclick="togglePwd()"></i>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="phoneNumber">Số Điện Thoại</label>
+        <input type="tel" id="phoneNumber" name="phoneNumber" class="form-control"
+               placeholder="0901234567"
+               value="{#if user.phoneNumber??}{user.phoneNumber}{/if}"
+               maxlength="15" pattern="[0-9\+\-\s]*" />
+      </div>
+    </div>
+
+    <!-- ── THÔNG TIN BỔ SUNG ── -->
+    <div class="form-section-title" style="margin-top:1.5rem">Thông Tin Bổ Sung</div>
+
+    <div class="form-group">
+      <label for="address">Địa Chỉ</label>
+      <input type="text" id="address" name="address" class="form-control"
+             placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành"
+             value="{#if user.address??}{user.address}{/if}"
+             maxlength="255" />
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="avatarUrl">URL Ảnh Đại Diện</label>
+        <input type="url" id="avatarUrl" name="avatarUrl" class="form-control"
+               placeholder="https://..."
+               value="{#if user.avatarUrl??}{user.avatarUrl}{/if}"
+               maxlength="500"
+               oninput="previewAvatar(this.value)" />
+        <p class="form-hint">Link ảnh công khai (PNG, JPG, WEBP...)</p>
+        <div id="avatarPreviewWrap" style="margin-top:0.5rem; display:none;">
+          <img id="avatarPreview" class="avatar-preview" style="display:block" src="" alt="Avatar" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="role">Vai Trò <span class="required">*</span></label>
+        <select id="role" name="role" class="form-select" required>
+          <option value="KHACH_HANG"
+            {#if user.role??}{#if user.role == 'KHACH_HANG'}selected{/if}{/if}>
+            🧑 Khách Hàng
+          </option>
+          <option value="NGUOI_BAN"
+            {#if user.role??}{#if user.role == 'NGUOI_BAN'}selected{/if}{/if}>
+            🏪 Người Bán
+          </option>
+          <option value="ADMIN"
+            {#if user.role??}{#if user.role == 'ADMIN'}selected{/if}{/if}>
+            🛡️ Admin
+          </option>
+        </select>
+        <p class="form-hint">Admin có toàn quyền quản lý hệ thống</p>
+      </div>
+    </div>
+
+    <!-- ── TRẠNG THÁI ── -->
+    {#if isEdit}
+    <div class="form-section-title" style="margin-top:1.5rem">Trạng Thái Tài Khoản</div>
+
+    <div class="form-row" style="gap:2rem; grid-template-columns: 1fr 1fr">
+      <div class="form-group">
+        <label style="margin-bottom:0.75rem">Kích Hoạt Tài Khoản</label>
+        <div class="toggle-group">
+          <label class="toggle-switch">
+            <input type="checkbox" name="isActive" value="true"
+              {#if user.isActive}checked{/if} />
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="toggle-label">
+            {#if user.isActive}Đang hoạt động{#else}Đã bị khóa{/if}
+          </span>
+        </div>
+        <p class="form-hint">Tài khoản bị khóa sẽ không thể đăng nhập</p>
+      </div>
+
+      <div class="form-group">
+        <label style="margin-bottom:0.75rem">Xác Minh Email</label>
+        <div class="toggle-group">
+          <label class="toggle-switch">
+            <input type="checkbox" name="emailVerified" value="true"
+              {#if user.emailVerified}checked{/if} />
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="toggle-label">
+            {#if user.emailVerified}Đã xác minh{#else}Chưa xác minh{/if}
+          </span>
+        </div>
+        <p class="form-hint">Đánh dấu email đã được xác minh</p>
+      </div>
+    </div>
+
+    {#if user.createdAt??}
+    <div style="background:#f8fafc; border-radius:10px; padding:0.75rem 1rem; font-size:0.78rem; color:#64748b; margin-top:0.5rem;">
+      <i class="bi bi-clock me-1"></i>
+      Ngày tạo: <strong>{user.createdAt}</strong>
+      &nbsp;|&nbsp;
+      <i class="bi bi-pencil me-1"></i>
+      Cập nhật: <strong>{user.updatedAt}</strong>
+    </div>
+    {/if}
+    {/if}
+
+    <!-- ── ACTIONS ── -->
+    <div class="form-actions">
+      <button type="submit" class="btn-save">
+        <i class="bi {#if isEdit}bi-check-circle{#else}bi-person-plus{/if}"></i>
+        {#if isEdit}Lưu Thay Đổi{#else}Tạo Người Dùng{/if}
+      </button>
+      <a href="/admin/users" class="btn-cancel">
+        <i class="bi bi-x-circle"></i> Hủy
+      </a>
+    </div>
+
+  </form>
+</div>
+
+<script>
+  function togglePwd() {
+    const input = document.getElementById('password');
+    const icon = input.nextElementSibling;
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.classList.replace('bi-eye-slash', 'bi-eye');
+    } else {
+      input.type = 'password';
+      icon.classList.replace('bi-eye', 'bi-eye-slash');
+    }
+  }
+
+  function previewAvatar(url) {
+    const wrap = document.getElementById('avatarPreviewWrap');
+    const img = document.getElementById('avatarPreview');
+    if (url && url.startsWith('http')) {
+      img.src = url;
+      img.onerror = () => { wrap.style.display = 'none'; };
+      img.onload = () => { wrap.style.display = 'block'; };
+    } else {
+      wrap.style.display = 'none';
+    }
+  }
+
+  // Init preview on page load (edit mode)
+  window.addEventListener('load', () => {
+    const urlInput = document.getElementById('avatarUrl');
+    if (urlInput && urlInput.value) previewAvatar(urlInput.value);
+  });
+
+  // Live toggle label update
+  document.querySelectorAll('.toggle-switch input').forEach(cb => {
+    cb.addEventListener('change', function() {
+      const label = this.closest('.toggle-group').querySelector('.toggle-label');
+      if (this.name === 'isActive') {
+        label.textContent = this.checked ? 'Đang hoạt động' : 'Đã bị khóa';
+      } else if (this.name === 'emailVerified') {
+        label.textContent = this.checked ? 'Đã xác minh' : 'Chưa xác minh';
+      }
+    });
+  });
+</script>
+{/body}
+
+{/include}

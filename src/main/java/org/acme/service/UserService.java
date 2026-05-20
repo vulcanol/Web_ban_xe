@@ -29,11 +29,93 @@ public class UserService {
         user.setEmail(email);
         user.setPassword(hashPassword(password));
         user.setPhoneNumber(phoneNumber);
+        user.setRole(User.UserRole.KHACH_HANG);
+        user.setIsActive(true);
+        user.setEmailVerified(false);
         user.setCreatedAt(Instant.now());
         user.setUpdatedAt(Instant.now());
 
         userRepository.persist(user);
         return user;
+    }
+
+    /**
+     * Admin tạo người dùng mới (có thể chọn vai trò)
+     */
+    @Transactional
+    public User createAdminUser(String fullName, String email, String password,
+                                String phoneNumber, String address, String avatarUrl,
+                                User.UserRole role) {
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new IllegalArgumentException("Email đã được sử dụng");
+        }
+
+        User user = new User();
+        user.setFullName(fullName);
+        user.setEmail(email);
+        user.setPassword(hashPassword(password));
+        user.setPhoneNumber(phoneNumber);
+        user.setAddress(address);
+        user.setAvatarUrl(avatarUrl);
+        user.setRole(role != null ? role : User.UserRole.KHACH_HANG);
+        user.setIsActive(true);
+        user.setEmailVerified(false);
+        user.setCreatedAt(Instant.now());
+        user.setUpdatedAt(Instant.now());
+
+        userRepository.persist(user);
+        return user;
+    }
+
+    /**
+     * Admin cập nhật thông tin người dùng (có thể đổi vai trò, trạng thái, mật khẩu)
+     */
+    @Transactional
+    public User updateUserAdmin(Long id, String fullName, String email,
+                                String newPassword, String phoneNumber,
+                                String address, String avatarUrl,
+                                User.UserRole role, Boolean isActive, Boolean emailVerified) {
+        User user = userRepository.findById(id);
+        if (user == null) {
+            throw new IllegalArgumentException("Người dùng không tồn tại");
+        }
+
+        // Check email uniqueness if changed
+        if (!user.getEmail().equals(email)) {
+            Optional<User> existing = userRepository.findByEmail(email);
+            if (existing.isPresent() && !existing.get().getId().equals(id)) {
+                throw new IllegalArgumentException("Email đã được sử dụng bởi tài khoản khác");
+            }
+        }
+
+        if (fullName != null && !fullName.isBlank()) user.setFullName(fullName);
+        if (email != null && !email.isBlank()) user.setEmail(email);
+        if (newPassword != null && !newPassword.isBlank()) user.setPassword(hashPassword(newPassword));
+        if (phoneNumber != null) user.setPhoneNumber(phoneNumber.isBlank() ? null : phoneNumber);
+        if (address != null) user.setAddress(address.isBlank() ? null : address);
+        if (avatarUrl != null) user.setAvatarUrl(avatarUrl.isBlank() ? null : avatarUrl);
+        if (role != null) user.setRole(role);
+        if (isActive != null) user.setIsActive(isActive);
+        if (emailVerified != null) user.setEmailVerified(emailVerified);
+
+        user.setUpdatedAt(Instant.now());
+        userRepository.persist(user);
+        return user;
+    }
+
+    /**
+     * Xóa người dùng (không cho phép xóa admin)
+     */
+    @Transactional
+    public void deleteUser(Long id) {
+        User user = userRepository.findById(id);
+        if (user == null) {
+            throw new IllegalArgumentException("Người dùng không tồn tại");
+        }
+        if (User.UserRole.ADMIN.equals(user.getRole())) {
+            throw new IllegalArgumentException("Không thể xóa tài khoản Admin");
+        }
+        userRepository.delete(user);
     }
 
     public Optional<User> authenticate(String email, String password) {

@@ -13,6 +13,7 @@ import org.acme.auth.SessionManager.SessionData;
 import org.acme.domain.Brand;
 import org.acme.domain.Category;
 import org.acme.domain.User;
+import org.acme.dto.UserDTO;
 import org.acme.service.BrandService;
 import org.acme.service.CategoryService;
 import org.acme.service.ListingService;
@@ -34,7 +35,7 @@ public class AdminController {
     @Inject UserService userService;
     @Inject ListingService listingService;
 
-    @CheckedTemplate(basePath = "admin")
+    @CheckedTemplate(basePath = "admin", requireTypeSafeExpressions = false)
     public static class Templates {
         public static native TemplateInstance dashboard(SessionData session,
                 long totalUsers, long totalListings, long totalCategories, long totalBrands);
@@ -49,7 +50,10 @@ public class AdminController {
                 List<Brand> brands);
 
         public static native TemplateInstance users(SessionData session,
-                List<org.acme.dto.UserDTO> users);
+                List<UserDTO> users);
+
+        public static native TemplateInstance userForm(SessionData session,
+                boolean isEdit, UserDTO user, String error);
     }
 
     // ── GUARD: kiểm tra quyền admin ─────────────────────────────────────────
@@ -186,6 +190,116 @@ public class AdminController {
     }
 
     @GET
+    @Path("/users/new")
+    public Response newUserForm(@CookieParam(SESSION_COOKIE) String sessionId) {
+        SessionData session = requireAdmin(sessionId);
+        if (session == null) return unauthorizedRedirect(sessionId);
+        return Response.ok(Templates.userForm(session, false, new UserDTO())).build();
+    }
+
+    @POST
+    @Path("/users/create")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response createUser(@CookieParam(SESSION_COOKIE) String sessionId,
+            @FormParam("fullName") String fullName,
+            @FormParam("email") String email,
+            @FormParam("password") String password,
+            @FormParam("phoneNumber") String phoneNumber,
+            @FormParam("address") String address,
+            @FormParam("avatarUrl") String avatarUrl,
+            @FormParam("role") String role) {
+        SessionData session = requireAdmin(sessionId);
+        if (session == null) return unauthorizedRedirect(sessionId);
+
+        try {
+            User.UserRole userRole = parseRole(role);
+            userService.createAdminUser(fullName, email, password, phoneNumber,
+                    address, avatarUrl, userRole);
+            return Response.seeOther(URI.create("/admin/users")).build();
+        } catch (IllegalArgumentException e) {
+            // Return back to form with error
+            UserDTO dto = buildDtoFromParams(null, fullName, email, phoneNumber, address, avatarUrl, role, true, false);
+            return Response.ok(Templates.userForm(session, false, dto, e.getMessage())).build();
+        }
+    }
+
+    @GET
+    @Path("/users/{id}/edit")
+    public Response editUserForm(@CookieParam(SESSION_COOKIE) String sessionId,
+            @PathParam("id") Long id) {
+        SessionData session = requireAdmin(sessionId);
+        if (session == null) return unauthorizedRedirect(sessionId);
+
+        return userService.getUserById(id)
+                .map(user -> {
+                    String noError = null;
+                    UserDTO dto = new UserDTO();
+                    dto.id = user.getId();
+                    dto.fullName = user.getFullName();
+                    dto.email = user.getEmail();
+                    dto.phoneNumber = user.getPhoneNumber();
+                    dto.role = user.getRole().name();
+                    dto.address = user.getAddress();
+                    dto.avatarUrl = user.getAvatarUrl();
+                    dto.isActive = user.getIsActive();
+                    dto.emailVerified = user.getEmailVerified();
+                    dto.createdAt = user.getCreatedAt();
+                    dto.updatedAt = user.getUpdatedAt();
+                    return Response.ok(Templates.userForm(session, true, dto, noError)).build();
+                })
+                .orElseThrow(() -> new NotFoundException("User not found"));
+    }
+
+    @POST
+    @Path("/users/{id}/update")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response updateUser(@CookieParam(SESSION_COOKIE) String sessionId,
+            @PathParam("id") Long id,
+            @FormParam("fullName") String fullName,
+            @FormParam("email") String email,
+            @FormParam("password") String password,
+            @FormParam("phoneNumber") String phoneNumber,
+            @FormParam("address") String address,
+            @FormParam("avatarUrl") String avatarUrl,
+            @FormParam("role") String role,
+            @FormParam("isActive") String isActiveStr,
+            @FormParam("emailVerified") String emailVerifiedStr) {
+        SessionData session = requireAdmin(sessionId);
+        if (session == null) return unauthorizedRedirect(sessionId);
+
+        try {
+            User.UserRole userRole = parseRole(role);
+            Boolean isActive = "true".equals(isActiveStr) || "on".equals(isActiveStr);
+            Boolean emailVerified = "true".equals(emailVerifiedStr) || "on".equals(emailVerifiedStr);
+
+            userService.updateUserAdmin(id, fullName, email,
+                    (password != null && !password.isBlank()) ? password : null,
+                    phoneNumber, address, avatarUrl, userRole, isActive, emailVerified);
+            return Response.seeOther(URI.create("/admin/users")).build();
+        } catch (IllegalArgumentException e) {
+            UserDTO dto = buildDtoFromParams(id, fullName, email, phoneNumber, address, avatarUrl, role,
+                    "on".equals(isActiveStr) || "true".equals(isActiveStr),
+                    "on".equals(emailVerifiedStr) || "true".equals(emailVerifiedStr));
+            return Response.ok(Templates.userForm(session, true, dto, e.getMessage())).build();
+        }
+    }
+
+    @GET
+    @Path("/users/{id}/delete")
+    public Response deleteUser(@CookieParam(SESSION_COOKIE) String sessionId,
+            @PathParam("id") Long id) {
+        SessionData session = requireAdmin(sessionId);
+        if (session == null) return unauthorizedRedirect(sessionId);
+
+        try {
+            userService.deleteUser(id);
+        } catch (IllegalArgumentException e) {
+            // Silently ignore if not found or is admin; could add flash message
+        }
+        return Response.seeOther(URI.create("/admin/users")).build();
+    }
+
+    @GET
     @Path("/users/{id}/toggle")
     public Response toggleUserStatus(@CookieParam(SESSION_COOKIE) String sessionId,
             @PathParam("id") Long id) {
@@ -194,5 +308,32 @@ public class AdminController {
 
         userService.toggleUserActive(id);
         return Response.seeOther(URI.create("/admin/users")).build();
+    }
+
+    // ── HELPERS ───────────────────────────────────────────────────────────────
+
+    private User.UserRole parseRole(String role) {
+        if (role == null || role.isBlank()) return User.UserRole.KHACH_HANG;
+        try {
+            return User.UserRole.valueOf(role.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return User.UserRole.KHACH_HANG;
+        }
+    }
+
+    private UserDTO buildDtoFromParams(Long id, String fullName, String email,
+            String phoneNumber, String address, String avatarUrl,
+            String role, Boolean isActive, Boolean emailVerified) {
+        UserDTO dto = new UserDTO();
+        dto.id = id;
+        dto.fullName = fullName;
+        dto.email = email;
+        dto.phoneNumber = phoneNumber;
+        dto.address = address;
+        dto.avatarUrl = avatarUrl;
+        dto.role = role;
+        dto.isActive = isActive;
+        dto.emailVerified = emailVerified;
+        return dto;
     }
 }

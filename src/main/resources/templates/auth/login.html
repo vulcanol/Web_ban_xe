@@ -59,6 +59,31 @@
       max-width: 520px;
       padding: 2.5rem 3rem;
       box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      position: relative;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #f1f1f1;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #555;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+      line-height: 1;
+    }
+    .close-btn:hover {
+      background: #e0e0e0;
+      color: #000;
     }
 
     .auth-container h1 {
@@ -181,6 +206,7 @@
   </div>
 
   <div class="auth-container">
+    <a href="/" class="close-btn" title="Về trang chủ">&times;</a>
     <h1>Đăng nhập <i class="bi bi-box-arrow-in-right" style="font-size: 1.1rem; color:#0078d6; vertical-align: middle;"></i></h1>
 
     {#if error??}
